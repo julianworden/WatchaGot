@@ -1,0 +1,14 @@
+{
+  "pins" : [
+    {
+      "identity" : "swiftplus",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/julianworden/SwiftPlus.git",
+      "state" : {
+        "revision" : "f7461b86b194e5daa1b749c1a50037f1cb666c74",
+        "version" : "1.1.2"
+      }
+    }
+  ],
+  "version" : 2
+}
