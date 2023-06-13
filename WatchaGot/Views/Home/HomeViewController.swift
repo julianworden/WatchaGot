@@ -81,6 +81,7 @@ class HomeViewController: UIViewController {
     @objc func receiveButtonTapped() {
         let addEditItemViewController = AddEditItemViewController()
         addEditItemViewController.viewModel = AddEditItemViewModel(itemToEdit: nil)
+        addEditItemViewController.delegate = self
         let navigationController = UINavigationController(
             rootViewController: addEditItemViewController
         )
@@ -118,6 +119,12 @@ extension HomeViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+extension HomeViewController: AddEditItemViewControllerDelegate {
+    func addEditItemViewControllerWillDisappear(_ viewController: AddEditItemViewController) {
+        viewModel.fetchItems()
     }
 }
 

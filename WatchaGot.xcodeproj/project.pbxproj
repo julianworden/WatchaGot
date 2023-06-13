@@ -23,6 +23,7 @@
 		AB6133DA2A3819C20004BAA3 /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6133D92A3819C20004BAA3 /* HomeTableViewCell.swift */; };
 		AB71DA4B2A321A2A00398075 /* AddEditItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB71DA4A2A321A2A00398075 /* AddEditItemCell.swift */; };
 		AB71DA4D2A321C0F00398075 /* AddEditItemTextFieldType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB71DA4C2A321C0E00398075 /* AddEditItemTextFieldType.swift */; };
+		ABA9822D2A38AC8300670A5F /* AddEditItemViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA9822C2A38AC8300670A5F /* AddEditItemViewControllerDelegate.swift */; };
 		ABB221D12A2FE2C500C4C1EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB221D02A2FE2C500C4C1EB /* AppDelegate.swift */; };
 		ABB221D32A2FE2C500C4C1EB /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB221D22A2FE2C500C4C1EB /* SceneDelegate.swift */; };
 		ABB221D52A2FE2C500C4C1EB /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB221D42A2FE2C500C4C1EB /* HomeViewController.swift */; };
@@ -46,6 +47,7 @@
 		AB6133D92A3819C20004BAA3 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 		AB71DA4A2A321A2A00398075 /* AddEditItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditItemCell.swift; sourceTree = "<group>"; };
 		AB71DA4C2A321C0E00398075 /* AddEditItemTextFieldType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditItemTextFieldType.swift; sourceTree = "<group>"; };
+		ABA9822C2A38AC8300670A5F /* AddEditItemViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditItemViewControllerDelegate.swift; sourceTree = "<group>"; };
 		ABB221CD2A2FE2C500C4C1EB /* WatchaGot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WatchaGot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		ABB221D02A2FE2C500C4C1EB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		ABB221D22A2FE2C500C4C1EB /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 				ABB221D42A2FE2C500C4C1EB /* HomeViewController.swift */,
 				AB6133D92A3819C20004BAA3 /* HomeTableViewCell.swift */,
 				AB6133D72A3818C10004BAA3 /* HomeViewModel.swift */,
+				ABA9822C2A38AC8300670A5F /* AddEditItemViewControllerDelegate.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -262,6 +265,7 @@
 				AB3B99952A31379C00F117AB /* AddEditItemViewModel.swift in Sources */,
 				AB1DEDDC2A3403490013CEC8 /* HttpMethod.swift in Sources */,
 				AB3B99992A3137F200F117AB /* Item.swift in Sources */,
+				ABA9822D2A38AC8300670A5F /* AddEditItemViewControllerDelegate.swift in Sources */,
 				AB47DD5C2A30CE5E001A16D3 /* UIButton.Configuration+borderedProminentWithPaddedImage.swift in Sources */,
 				AB1DEDE12A3404330013CEC8 /* HttpError.swift in Sources */,
 				AB115F922A33738B00BD1B5A /* DatabaseService.swift in Sources */,

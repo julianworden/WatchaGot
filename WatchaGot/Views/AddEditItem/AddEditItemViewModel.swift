@@ -8,6 +8,8 @@
 import UIKit
 
 final class AddEditItemViewModel {
+    /// Dismisses AddEditItemViewController when set to `true`. This property should only be modified
+    /// after an asynchronous task has been completed.
     @Published var dismissViewController = false
 
     var itemToEdit: Item?

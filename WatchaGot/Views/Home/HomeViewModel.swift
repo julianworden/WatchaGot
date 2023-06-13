@@ -21,7 +21,7 @@ final class HomeViewModel {
             }
 
             DispatchQueue.main.async {
-                self?.items = items
+                self?.items = items.sorted { $0.name.lowercased() < $1.name.lowercased() }
             }
         }
     }

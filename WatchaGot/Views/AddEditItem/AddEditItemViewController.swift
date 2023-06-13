@@ -24,6 +24,8 @@ class AddEditItemViewController: UIViewController {
         action: #selector(cancelButtonTapped)
     )
 
+    weak var delegate: AddEditItemViewControllerDelegate?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -59,7 +61,13 @@ class AddEditItemViewController: UIViewController {
     func subscribeToPublishers() {
         viewModel.$dismissViewController
             .sink { [weak self] dismissViewController in
-                dismissViewController ? self?.dismiss(animated: true) : nil
+                guard let self else { return }
+
+                print("GOT HERE!")
+                if dismissViewController {
+                    self.delegate?.addEditItemViewControllerWillDisappear(self)
+                    self.dismiss(animated: true)
+                }
             }
             .store(in: &cancellables)
     }
@@ -69,7 +77,7 @@ class AddEditItemViewController: UIViewController {
     }
 
     @objc func cancelButtonTapped() {
-        viewModel.dismissViewController = true
+        dismiss(animated: true)
     }
 }
 
@@ -111,6 +119,12 @@ extension AddEditItemViewController: UITextFieldDelegate {
         default:
             break
         }
+    }
+}
+
+extension AddEditItemViewController: UISheetPresentationControllerDelegate {
+    func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
+        print("GOT HERE!")
     }
 }
 
