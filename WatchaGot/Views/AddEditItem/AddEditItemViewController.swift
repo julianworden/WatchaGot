@@ -18,18 +18,24 @@ class AddEditItemViewController: UIViewController {
         target: self,
         action: #selector(saveButtonTapped)
     )
+    lazy var cancelButton = UIBarButtonItem(
+        barButtonSystemItem: .cancel,
+        target: self,
+        action: #selector(cancelButtonTapped)
+    )
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         configure()
         constrain()
-        setUpBindings()
+        subscribeToPublishers()
     }
 
     func configure() {
         title = viewModel.navigationTitle
         view.backgroundColor = .systemBackground
+        navigationItem.leftBarButtonItem = cancelButton
         navigationItem.rightBarButtonItem = saveButton
 
         tableView.delegate = self
@@ -50,7 +56,7 @@ class AddEditItemViewController: UIViewController {
         ])
     }
 
-    func setUpBindings() {
+    func subscribeToPublishers() {
         viewModel.$dismissViewController
             .sink { [weak self] dismissViewController in
                 dismissViewController ? self?.dismiss(animated: true) : nil
@@ -60,6 +66,10 @@ class AddEditItemViewController: UIViewController {
 
     @objc func saveButtonTapped() {
         viewModel.saveButtonTapped()
+    }
+
+    @objc func cancelButtonTapped() {
+        viewModel.dismissViewController = true
     }
 }
 

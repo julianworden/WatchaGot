@@ -26,12 +26,11 @@ final class AddEditItemViewModel {
     func saveButtonTapped() {
         if itemToEdit == nil {
             let newItem = Item(name: itemName, price: itemPrice)
-            DatabaseService.shared.saveData(newItem) { [weak self] error in
+            DatabaseService.shared.saveData(save: newItem, at: Constants.apiItemsUrl) { [weak self] error in
                 guard error == nil else {
-                    print("ERROR: \(error)")
+                    print("ERROR: \(error!)")
                     return
                 } //  TODO: Handle Error
-
                 self?.dismissViewController = true
             }
         }
