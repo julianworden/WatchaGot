@@ -7,9 +7,16 @@
 
 import Foundation
 
-struct Item {
+struct Item: Codable {
+    let id: UUID?
     let name: String
     let price: Double
 
     static let example = Item(name: "Couch", price: 499.99)
+
+    internal init(id: UUID? = nil, name: String, price: Double) {
+        self.id = id
+        self.name = name
+        self.price = price
+    }
 }

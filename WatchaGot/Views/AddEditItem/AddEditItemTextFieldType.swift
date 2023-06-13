@@ -25,7 +25,7 @@ enum AddEditItemTextFieldType: CaseIterable {
         case .name:
             return "Name"
         case .price:
-            return "Price"
+            return "Price (\(Locale.current.currency?.identifier ?? "Your Currency"))"
         }
     }
 

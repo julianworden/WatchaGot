@@ -7,6 +7,13 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		AB115F922A33738B00BD1B5A /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB115F912A33738B00BD1B5A /* DatabaseService.swift */; };
+		AB1DEDD72A3400CC0013CEC8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1DEDD62A3400CC0013CEC8 /* Constants.swift */; };
+		AB1DEDD92A3402300013CEC8 /* ApiEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1DEDD82A3402300013CEC8 /* ApiEndpoint.swift */; };
+		AB1DEDDA2A3403490013CEC8 /* HttpHeaders.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1DEDD32A3400820013CEC8 /* HttpHeaders.swift */; };
+		AB1DEDDB2A3403490013CEC8 /* MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1DEDD52A3400820013CEC8 /* MimeType.swift */; };
+		AB1DEDDC2A3403490013CEC8 /* HttpMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1DEDD42A3400820013CEC8 /* HttpMethod.swift */; };
+		AB1DEDE12A3404330013CEC8 /* HttpError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1DEDE02A3404330013CEC8 /* HttpError.swift */; };
 		AB3B99912A31363200F117AB /* AddEditItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3B99902A31363200F117AB /* AddEditItemViewController.swift */; };
 		AB3B99952A31379C00F117AB /* AddEditItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3B99942A31379C00F117AB /* AddEditItemViewModel.swift */; };
 		AB3B99992A3137F200F117AB /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3B99982A3137F200F117AB /* Item.swift */; };
@@ -22,6 +29,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		AB115F912A33738B00BD1B5A /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
+		AB1DEDD32A3400820013CEC8 /* HttpHeaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpHeaders.swift; sourceTree = "<group>"; };
+		AB1DEDD42A3400820013CEC8 /* HttpMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpMethod.swift; sourceTree = "<group>"; };
+		AB1DEDD52A3400820013CEC8 /* MimeType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MimeType.swift; sourceTree = "<group>"; };
+		AB1DEDD62A3400CC0013CEC8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		AB1DEDD82A3402300013CEC8 /* ApiEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiEndpoint.swift; sourceTree = "<group>"; };
+		AB1DEDE02A3404330013CEC8 /* HttpError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HttpError.swift; path = ../../../../Learning/CodeWithChrisVaporApp/CodeWithChrisVaporApp/Errors/HttpError.swift; sourceTree = "<group>"; };
 		AB3B99902A31363200F117AB /* AddEditItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditItemViewController.swift; sourceTree = "<group>"; };
 		AB3B99942A31379C00F117AB /* AddEditItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditItemViewModel.swift; sourceTree = "<group>"; };
 		AB3B99982A3137F200F117AB /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
@@ -49,6 +63,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		AB115F902A33738500BD1B5A /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				AB115F912A33738B00BD1B5A /* DatabaseService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		AB1DEDD22A34007B0013CEC8 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				AB1DEDD82A3402300013CEC8 /* ApiEndpoint.swift */,
+				AB1DEDD62A3400CC0013CEC8 /* Constants.swift */,
+				AB1DEDD32A3400820013CEC8 /* HttpHeaders.swift */,
+				AB1DEDD42A3400820013CEC8 /* HttpMethod.swift */,
+				AB1DEDD52A3400820013CEC8 /* MimeType.swift */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		AB1DEDDD2A3404200013CEC8 /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				AB1DEDE02A3404330013CEC8 /* HttpError.swift */,
+			);
+			path = Errors;
+			sourceTree = "<group>";
+		};
 		AB3B99922A31363700F117AB /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -116,7 +158,10 @@
 				ABB221D22A2FE2C500C4C1EB /* SceneDelegate.swift */,
 				AB3B999A2A3137F400F117AB /* Model */,
 				AB3B99922A31363700F117AB /* Views */,
+				AB115F902A33738500BD1B5A /* Services */,
 				AB3B99932A31363E00F117AB /* Extensions */,
+				AB1DEDD22A34007B0013CEC8 /* Utilities */,
+				AB1DEDDD2A3404200013CEC8 /* Errors */,
 				ABB221D92A2FE2C500C4C1EB /* Assets.xcassets */,
 				ABB221DB2A2FE2C500C4C1EB /* LaunchScreen.storyboard */,
 				ABB221DE2A2FE2C500C4C1EB /* Info.plist */,
@@ -201,14 +246,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				AB3B99912A31363200F117AB /* AddEditItemViewController.swift in Sources */,
+				AB1DEDDB2A3403490013CEC8 /* MimeType.swift in Sources */,
+				AB1DEDDA2A3403490013CEC8 /* HttpHeaders.swift in Sources */,
+				AB1DEDD72A3400CC0013CEC8 /* Constants.swift in Sources */,
 				ABB221D52A2FE2C500C4C1EB /* HomeViewController.swift in Sources */,
 				ABB221D12A2FE2C500C4C1EB /* AppDelegate.swift in Sources */,
 				AB3B99952A31379C00F117AB /* AddEditItemViewModel.swift in Sources */,
+				AB1DEDDC2A3403490013CEC8 /* HttpMethod.swift in Sources */,
 				AB3B99992A3137F200F117AB /* Item.swift in Sources */,
 				AB47DD5C2A30CE5E001A16D3 /* UIButton.Configuration+borderedProminentWithPaddedImage.swift in Sources */,
+				AB1DEDE12A3404330013CEC8 /* HttpError.swift in Sources */,
+				AB115F922A33738B00BD1B5A /* DatabaseService.swift in Sources */,
 				AB71DA4B2A321A2A00398075 /* AddEditItemCell.swift in Sources */,
 				AB71DA4D2A321C0F00398075 /* AddEditItemTextFieldType.swift in Sources */,
 				ABB221D32A2FE2C500C4C1EB /* SceneDelegate.swift in Sources */,
+				AB1DEDD92A3402300013CEC8 /* ApiEndpoint.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

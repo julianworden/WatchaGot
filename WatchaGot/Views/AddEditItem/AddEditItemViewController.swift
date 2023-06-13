@@ -5,10 +5,12 @@
 //  Created by Julian Worden on 6/7/23.
 //
 
+import Combine
 import UIKit
 
 class AddEditItemViewController: UIViewController {
     var viewModel: AddEditItemViewModel!
+    var cancellables = Set<AnyCancellable>()
 
     lazy private var tableView = UITableView()
     lazy private var saveButton = UIBarButtonItem(
@@ -22,6 +24,7 @@ class AddEditItemViewController: UIViewController {
 
         configure()
         constrain()
+        setUpBindings()
     }
 
     func configure() {
@@ -33,6 +36,7 @@ class AddEditItemViewController: UIViewController {
         tableView.dataSource = self
         tableView.register(AddEditItemCell.self, forCellReuseIdentifier: AddEditItemCell.reuseIdentifier)
         tableView.separatorStyle = .none
+        tableView.allowsSelection = false
     }
 
     func constrain() {
@@ -46,8 +50,16 @@ class AddEditItemViewController: UIViewController {
         ])
     }
 
+    func setUpBindings() {
+        viewModel.$dismissViewController
+            .sink { [weak self] dismissViewController in
+                dismissViewController ? self?.dismiss(animated: true) : nil
+            }
+            .store(in: &cancellables)
+    }
+
     @objc func saveButtonTapped() {
-        print("Name: \(viewModel.itemName), Price: \(viewModel.itemPrice)")
+        viewModel.saveButtonTapped()
     }
 }
 
