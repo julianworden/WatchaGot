@@ -8,7 +8,7 @@
 import Combine
 import UIKit
 
-class AddEditItemViewController: UIViewController {
+class AddEditItemViewController: UIViewController, MainView {
     var viewModel: AddEditItemViewModel!
     var cancellables = Set<AnyCancellable>()
 
@@ -59,17 +59,26 @@ class AddEditItemViewController: UIViewController {
     }
 
     func subscribeToPublishers() {
-        viewModel.$dismissViewController
-            .sink { [weak self] dismissViewController in
-                guard let self else { return }
+        viewModel.$updatedItem
+            .sink { [weak self] updatedItem in
+                guard let updatedItem else { return }
+                
+                self?.delegate?.addEditItemViewController(didCreateItem: updatedItem)
+                self?.dismiss(animated: true)
+            }
+            .store(in: &cancellables)
 
-                print("GOT HERE!")
-                if dismissViewController {
-                    self.delegate?.addEditItemViewControllerWillDisappear(self)
-                    self.dismiss(animated: true)
+        viewModel.$error
+            .sink { [weak self] error in
+                if let error {
+                    self?.showError(error)
                 }
             }
             .store(in: &cancellables)
+    }
+
+    func showError(_ error: Error) {
+        present(UIAlertController.genericError(error), animated: true)
     }
 
     @objc func saveButtonTapped() {
@@ -85,7 +94,7 @@ extension AddEditItemViewController: UITableViewDelegate, UITableViewDataSource 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return AddEditItemTextFieldType.allCases.count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let index = indexPath.row
 
@@ -119,12 +128,6 @@ extension AddEditItemViewController: UITextFieldDelegate {
         default:
             break
         }
-    }
-}
-
-extension AddEditItemViewController: UISheetPresentationControllerDelegate {
-    func presentationControllerWillDismiss(_ presentationController: UIPresentationController) {
-        print("GOT HERE!")
     }
 }
 

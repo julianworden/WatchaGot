@@ -9,13 +9,13 @@ import Combine
 import SwiftPlus
 import UIKit
 
-class HomeViewController: UIViewController {
+class HomeViewController: UIViewController, MainView {
     lazy private var buttonStack = UIStackView(arrangedSubviews: [receiveButton, shipButton])
     lazy private var receiveButton = UIButton(configuration: .borderedProminentWithPaddedImage())
     lazy private var shipButton = UIButton(configuration: .borderedProminentWithPaddedImage())
     lazy private var itemsTableView = UITableView()
 
-    lazy private var dataSource = getDiffableDataSource()
+    private var dataSource: UITableViewDiffableDataSource<HomeTableViewSection, Item>!
 
     var viewModel = HomeViewModel()
     var cancellables = Set<AnyCancellable>()
@@ -27,6 +27,7 @@ class HomeViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        createDiffableDataSource()
         configure()
         constrain()
         subscribeToPublishers()
@@ -69,13 +70,27 @@ class HomeViewController: UIViewController {
             itemsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
-
+    
     func subscribeToPublishers() {
         viewModel.$items
             .sink { [weak self] items in
-                self?.updateDiffableDataSource(with: items)
+
+                let sortedItems = items.sorted { $0.name.lowercased() < $1.name.lowercased() }
+                self?.updateDiffableDataSource(with: sortedItems)
             }
             .store(in: &cancellables)
+
+        viewModel.$error
+            .sink { [weak self] error in
+                if let error {
+                    self?.showError(error)
+                }
+            }
+            .store(in: &cancellables)
+    }
+
+    func showError(_ error: Error) {
+        present(UIAlertController.genericError(error), animated: true)
     }
 
     @objc func receiveButtonTapped() {
@@ -89,13 +104,9 @@ class HomeViewController: UIViewController {
     }
 }
 
-extension HomeViewController: UITableViewDelegate {
-    enum Section: Hashable {
-        case main
-    }
-
-    private func getDiffableDataSource() -> UITableViewDiffableDataSource<Section, Item> {
-        let dataSource = UITableViewDiffableDataSource<Section, Item>(tableView: itemsTableView) { tableView, indexPath, item in
+extension HomeViewController: UITableViewDelegate, AddEditItemDiffableDataSourceDelegate {
+    private func createDiffableDataSource() {
+        let dataSource = AddEditItemDiffableDataSource(tableView: itemsTableView) { tableView, indexPath, item in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeTableViewCell.reuseIdentifier) else {
                 return UITableViewCell()
             }
@@ -107,25 +118,31 @@ extension HomeViewController: UITableViewDelegate {
             return cell
         }
 
-        return dataSource
+        dataSource.delegate = self
+        self.dataSource = dataSource
     }
 
     private func updateDiffableDataSource(with items: [Item]) {
-        var snapshot = NSDiffableDataSourceSnapshot<Section, Item>()
+        var snapshot = NSDiffableDataSourceSnapshot<HomeTableViewSection, Item>()
         snapshot.appendSections([.main])
-        snapshot.appendItems(items)
+        snapshot.appendItems(items, toSection: .main)
         dataSource.apply(snapshot, animatingDifferences: true)
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
+
+    func addEditItemDiffableDataSource(didDeleteItemAt indexPath: IndexPath) {
+        viewModel.deleteItem(at: indexPath)
+    }
 }
 
 extension HomeViewController: AddEditItemViewControllerDelegate {
-    func addEditItemViewControllerWillDisappear(_ viewController: AddEditItemViewController) {
-        viewModel.fetchItems()
+    func addEditItemViewController(didCreateItem item: Item) {
+        viewModel.items.append(item)
     }
+
 }
 
 #Preview {

@@ -36,7 +36,7 @@ final class DatabaseService {
         .resume()
     }
 
-    func saveData<T: Codable>(save data: T, at url: URL, completion: @escaping (Error?) -> Void) {
+    func saveData<T: Codable>(save data: T, at url: URL, completion: @escaping (T?, Error?) -> Void) {
         do {
             let dataAsJson = try JSONEncoder().encode(data)
             var urlRequest = URLRequest(url: url)
@@ -44,20 +44,42 @@ final class DatabaseService {
             urlRequest.httpBody = dataAsJson
             urlRequest.addValue(MimeType.json.rawValue, forHTTPHeaderField: HttpHeader.contentType.rawValue)
 
-            URLSession.shared.dataTask(with: urlRequest) { [weak self] _, response, error in
+            URLSession.shared.dataTask(with: urlRequest) { [weak self] data, response, error in
                 self?.handleErrorAndReponse(error: error, response: response) { thrownError in
                     guard thrownError == nil else {
-                        completion(thrownError)
+                        completion(nil, thrownError)
                         return
                     }
                 }
+
+                if let data,
+                   let decodedData = try? JSONDecoder().decode(T.self, from: data) {
+                    completion(decodedData, nil)
+                } else {
+                    completion(nil, HttpError.decodingFailed)
+                }
             }
             .resume()
-
-            completion(nil)
         } catch {
-            completion(error)
+            completion(nil, error)
         }
+    }
+
+    func deleteData(at url: URL, completion: @escaping (Error?) -> Void) {
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = HttpMethod.DELETE.rawValue
+
+        URLSession.shared.dataTask(with: urlRequest) { [weak self] data, response, error in
+            self?.handleErrorAndReponse(error: error, response: response, completion: { thrownError in
+                guard thrownError == nil else {
+                    completion(thrownError)
+                    return
+                }
+            })
+        }
+        .resume()
+
+        completion(nil)
     }
 
     func handleErrorAndReponse(error: Error?, response: URLResponse?, completion: (Error?) -> Void) {

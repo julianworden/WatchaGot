@@ -8,9 +8,8 @@
 import UIKit
 
 final class AddEditItemViewModel {
-    /// Dismisses AddEditItemViewController when set to `true`. This property should only be modified
-    /// after an asynchronous task has been completed.
-    @Published var dismissViewController = false
+    @Published var updatedItem: Item?
+    @Published var error: Error?
 
     var itemToEdit: Item?
 
@@ -28,12 +27,15 @@ final class AddEditItemViewModel {
     func saveButtonTapped() {
         if itemToEdit == nil {
             let newItem = Item(name: itemName, price: itemPrice)
-            DatabaseService.shared.saveData(save: newItem, at: Constants.apiItemsUrl) { [weak self] error in
+            DatabaseService.shared.saveData(save: newItem, at: Constants.apiItemsUrl) { [weak self] item, error in
                 guard error == nil else {
-                    print("ERROR: \(error!)")
+                    self?.error = HttpError.badResponse
                     return
-                } //  TODO: Handle Error
-                self?.dismissViewController = true
+                }
+
+                DispatchQueue.main.async {
+                    self?.updatedItem = item
+                }
             }
         }
     }

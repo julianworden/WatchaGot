@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 protocol AddEditItemViewControllerDelegate: AnyObject {
-    func addEditItemViewControllerWillDisappear(_ viewController: AddEditItemViewController)
+    func addEditItemViewController(didCreateItem item: Item)
 }
