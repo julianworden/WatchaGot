@@ -8,7 +8,7 @@
 import Combine
 import UIKit
 
-class AddEditItemViewController: UIViewController, MainView {
+class AddEditItemViewController: UIViewController, MainViewController {
     var viewModel: AddEditItemViewModel!
     var cancellables = Set<AnyCancellable>()
 

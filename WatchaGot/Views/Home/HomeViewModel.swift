@@ -8,7 +8,7 @@
 import Combine
 import Foundation
 
-final class HomeViewModel {
+final class HomeViewModel: MainViewModel {
     @Published var items = [Item]()
     @Published var error: Error?
 
@@ -21,7 +21,7 @@ final class HomeViewModel {
             }
 
             DispatchQueue.main.async {
-                self?.items = items
+                self?.items = items.sorted { $0.name.lowercased() < $1.name.lowercased() }
             }
         }
     }

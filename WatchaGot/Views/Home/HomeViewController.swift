@@ -9,7 +9,7 @@ import Combine
 import SwiftPlus
 import UIKit
 
-class HomeViewController: UIViewController, MainView {
+class HomeViewController: UIViewController, MainViewController {
     lazy private var buttonStack = UIStackView(arrangedSubviews: [receiveButton, shipButton])
     lazy private var receiveButton = UIButton(configuration: .borderedProminentWithPaddedImage())
     lazy private var shipButton = UIButton(configuration: .borderedProminentWithPaddedImage())
@@ -17,12 +17,8 @@ class HomeViewController: UIViewController, MainView {
 
     private var dataSource: UITableViewDiffableDataSource<HomeTableViewSection, Item>!
 
-    var viewModel = HomeViewModel()
+    var viewModel: HomeViewModel!
     var cancellables = Set<AnyCancellable>()
-
-    override func viewIsAppearing(_ animated: Bool) {
-        viewModel.fetchItems()
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,6 +27,7 @@ class HomeViewController: UIViewController, MainView {
         configure()
         constrain()
         subscribeToPublishers()
+        viewModel.fetchItems()
     }
 
     func configure() {
@@ -131,6 +128,12 @@ extension HomeViewController: UITableViewDelegate, AddEditItemDiffableDataSource
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+
+        let selectedItem = viewModel.items[indexPath.row]
+        let itemDetailsViewController = ItemDetailsViewController()
+        itemDetailsViewController.viewModel = ItemDetailsViewModel(item: selectedItem)
+
+        navigationController?.pushViewController(itemDetailsViewController, animated: true)
     }
 
     func addEditItemDiffableDataSource(didDeleteItemAt indexPath: IndexPath) {

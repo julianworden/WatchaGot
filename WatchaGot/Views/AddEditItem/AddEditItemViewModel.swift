@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class AddEditItemViewModel {
+final class AddEditItemViewModel: MainViewModel {
     @Published var updatedItem: Item?
     @Published var error: Error?
 
