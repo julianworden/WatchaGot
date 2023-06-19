@@ -30,14 +30,9 @@ final class AddEditItemViewModel: MainViewModel {
 
     func beginNfcScanning() {
         do {
-            if itemToEdit == nil {
-                let newItem = Item(
-                    name: itemName,
-                    price: itemPrice,
-                    notes: itemNotes.isReallyEmpty ? nil : itemNotes
-                )
-
-                try NfcService.shared.startScanning(withAction: .write(item: newItem))
+            if itemToEdit == nil,
+               let updatedItem {
+                try NfcService.shared.startScanning(withAction: .write(item: updatedItem))
             }
         } catch {
             self.error = error

@@ -15,6 +15,17 @@ final class NfcService: NSObject, NFCNDEFReaderSessionDelegate {
     var nfcSession: NFCNDEFReaderSession?
     var action: NfcAction?
 
+    var firstNfcSessionAlertMessage: String {
+        switch action {
+        case .read(_):
+            return "Hold your phone near an NFC tag."
+        case .write(_):
+            return "Hold your phone near an empty NFC tag"
+        default:
+            return ""
+        }
+    }
+
     func startScanning(withAction action: NfcAction) throws {
         guard NFCNDEFReaderSession.readingAvailable else {
             throw NfcError.scanningNotSupported
@@ -23,7 +34,7 @@ final class NfcService: NSObject, NFCNDEFReaderSessionDelegate {
         self.action = action
 
         nfcSession = NFCNDEFReaderSession(delegate: self, queue: nil, invalidateAfterFirstRead: true)
-        nfcSession?.alertMessage = "Hold your phone near an empty NFC tag."
+        nfcSession?.alertMessage = firstNfcSessionAlertMessage
         nfcSession?.begin()
     }
 
@@ -84,6 +95,7 @@ final class NfcService: NSObject, NFCNDEFReaderSessionDelegate {
             }
 
             self?.nfcSession?.invalidate()
+            self?.postNfcScanningFinishedNotification()
         }
     }
 
@@ -104,6 +116,7 @@ final class NfcService: NSObject, NFCNDEFReaderSessionDelegate {
             }
 
             if let item = try? JSONDecoder().decode(Item.self, from: ndefMessage.records.first!.payload) {
+                self?.nfcSession?.alertMessage = "Your NFC tag was read successfully!"
                 print(item)
             } else {
                 print(ndefMessage.records)
@@ -111,12 +124,18 @@ final class NfcService: NSObject, NFCNDEFReaderSessionDelegate {
             }
 
             self?.nfcSession?.invalidate()
+            self?.postNfcScanningFinishedNotification()
         }
     }
 
     func handleError(_ error: NfcError) {
         nfcSession?.alertMessage = error.localizedDescription
         nfcSession?.invalidate()
+        postNfcScanningFinishedNotification()
+    }
+
+    func postNfcScanningFinishedNotification() {
+        NotificationCenter.default.post(name: .nfcSessionFinished, object: nil)
     }
 
     func readerSession(_ session: NFCNDEFReaderSession, didInvalidateWithError error: Error) {

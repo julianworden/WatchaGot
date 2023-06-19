@@ -27,6 +27,7 @@
 		AB3B99992A3137F200F117AB /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3B99982A3137F200F117AB /* Item.swift */; };
 		AB47DD582A30B58A001A16D3 /* SwiftPlus in Frameworks */ = {isa = PBXBuildFile; productRef = AB47DD572A30B58A001A16D3 /* SwiftPlus */; };
 		AB47DD5C2A30CE5E001A16D3 /* UIButton.Configuration+borderedProminentWithPaddedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB47DD5B2A30CE5E001A16D3 /* UIButton.Configuration+borderedProminentWithPaddedImage.swift */; };
+		AB5826BE2A4088DA00EF0866 /* NotificationCenter.Name+CustomNames.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB5826BD2A4088DA00EF0866 /* NotificationCenter.Name+CustomNames.swift */; };
 		AB6133D82A3818C10004BAA3 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6133D72A3818C10004BAA3 /* HomeViewModel.swift */; };
 		AB6133DA2A3819C20004BAA3 /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6133D92A3819C20004BAA3 /* HomeTableViewCell.swift */; };
 		AB71DA4B2A321A2A00398075 /* AddEditItemTextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB71DA4A2A321A2A00398075 /* AddEditItemTextViewCell.swift */; };
@@ -63,6 +64,7 @@
 		AB3B99942A31379C00F117AB /* AddEditItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditItemViewModel.swift; sourceTree = "<group>"; };
 		AB3B99982A3137F200F117AB /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		AB47DD5B2A30CE5E001A16D3 /* UIButton.Configuration+borderedProminentWithPaddedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton.Configuration+borderedProminentWithPaddedImage.swift"; sourceTree = "<group>"; };
+		AB5826BD2A4088DA00EF0866 /* NotificationCenter.Name+CustomNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NotificationCenter.Name+CustomNames.swift"; sourceTree = "<group>"; };
 		AB6133D72A3818C10004BAA3 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		AB6133D92A3819C20004BAA3 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
 		AB71DA4A2A321A2A00398075 /* AddEditItemTextViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditItemTextViewCell.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 			children = (
 				AB47DD5B2A30CE5E001A16D3 /* UIButton.Configuration+borderedProminentWithPaddedImage.swift */,
 				AB37731F2A3A06FC000CBFC8 /* UIAlertController+GenericError.swift */,
+				AB5826BD2A4088DA00EF0866 /* NotificationCenter.Name+CustomNames.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -308,6 +311,7 @@
 				AB6133D82A3818C10004BAA3 /* HomeViewModel.swift in Sources */,
 				AB0D7E112A3E703400B8F34D /* NfcService.swift in Sources */,
 				AB2416ED2A3CAA33007966CA /* AddEditItemTextFieldCell.swift in Sources */,
+				AB5826BE2A4088DA00EF0866 /* NotificationCenter.Name+CustomNames.swift in Sources */,
 				AB3B99912A31363200F117AB /* AddEditItemViewController.swift in Sources */,
 				AB014EA82A3B3ED60049AB59 /* ItemDetailsViewModel.swift in Sources */,
 				AB1DEDDB2A3403490013CEC8 /* MimeType.swift in Sources */,

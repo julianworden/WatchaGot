@@ -64,9 +64,9 @@ class AddEditItemViewController: UIViewController, MainViewController {
         viewModel.$updatedItem
             .sink { [weak self] updatedItem in
                 guard let updatedItem else { return }
-                
+
                 self?.delegate?.addEditItemViewController(didCreateItem: updatedItem)
-                self?.dismiss(animated: true)
+                self?.presentScanningAlert()
             }
             .store(in: &cancellables)
 
@@ -77,37 +77,53 @@ class AddEditItemViewController: UIViewController, MainViewController {
                 }
             }
             .store(in: &cancellables)
+
+        NotificationCenter.default.publisher(for: .nfcSessionFinished)
+            .sink { [weak self] _ in
+                DispatchQueue.main.async {
+                    self?.dismissView()
+                }
+            }
+            .store(in: &cancellables)
     }
 
     func showError(_ error: Error) {
         present(UIAlertController.genericError(error), animated: true)
     }
-
+    
+    /// Presents an alert that asks the user if they are going to use an NFC tag to store their new Item's data.
     func presentScanningAlert() {
         let alert = UIAlertController(
             title: "Are You Using an NFC Tag?",
             message: "Watcha Got can write item data to empty NFC tags. If you have an NFC tag, tap \"Yes\" to use it to receive and ship items faster.",
             preferredStyle: .alert
         )
-        let noAction = UIAlertAction(title: "No", style: .default)
-        let yesAction = UIAlertAction(title: "Yes", style: .default, handler: beginNfcScanning(_:))
+        let noAction = UIAlertAction(title: "No", style: .default, handler: noNfcTagButtonTapped(_:))
+        let yesAction = UIAlertAction(title: "Yes", style: .default, handler: yesNfcTagButtonTapped(_:))
         alert.addAction(noAction)
         alert.addAction(yesAction)
 
         present(alert, animated: true)
     }
 
-    func beginNfcScanning(_ action: UIAlertAction) {
+    func noNfcTagButtonTapped(_ action: UIAlertAction) {
+        dismissView()
+    }
+
+    func yesNfcTagButtonTapped(_ action: UIAlertAction) {
         viewModel.beginNfcScanning()
     }
 
+    func dismissView() {
+        dismiss(animated: true)
+    }
+
     @objc func saveButtonTapped() {
-        // TODO: Save Item to database before presenting scanning alert
-        presentScanningAlert()
+        viewModel.saveButtonTapped()
     }
 
     @objc func cancelButtonTapped() {
-        dismiss(animated: true)
+        dismissView()
     }
 }
 
