@@ -11,12 +11,31 @@ struct Item: Codable, Hashable {
     let id: UUID?
     let name: String
     let price: Double
+    let hasTag: Bool
+    let notes: String?
 
-    static let example = Item(name: "Couch", price: 499.99)
+    var formattedPrice: String {
+        return price.formatted(.currency(code: Locale.current.currency?.identifier ?? "USD"))
+    }
 
-    internal init(id: UUID? = nil, name: String, price: Double) {
+    static let example = Item(
+        name: "Couch",
+        price: 499.99,
+        hasTag: true,
+        notes: "Beautiful leather couch."
+    )
+
+    internal init(
+        id: UUID? = nil,
+        name: String,
+        price: Double,
+        hasTag: Bool = false,
+        notes: String? = nil
+    ) {
         self.id = id
         self.name = name
         self.price = price
+        self.hasTag = hasTag
+        self.notes = notes
     }
 }

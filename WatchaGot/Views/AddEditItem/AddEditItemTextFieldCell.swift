@@ -1,5 +1,5 @@
 //
-//  AddEditItemCell.swift
+//  AddEditItemTextFieldCell.swift
 //  WatchaGot
 //
 //  Created by Julian Worden on 6/8/23.
@@ -7,8 +7,8 @@
 
 import UIKit
 
-final class AddEditItemCell: UITableViewCell {
-    static let reuseIdentifier = "AddEditItemCell"
+final class AddEditItemTextFieldCell: UITableViewCell {
+    static let reuseIdentifier = "AddEditItemTextFieldCell"
 
     lazy var textField = UITextField()
 
@@ -42,7 +42,7 @@ final class AddEditItemCell: UITableViewCell {
 }
 
 #Preview {
-    let cell = AddEditItemCell()
+    let cell = AddEditItemTextFieldCell()
     cell.configure(.name)
     return cell
 }

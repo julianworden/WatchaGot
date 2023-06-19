@@ -6,6 +6,7 @@
 //
 
 import Combine
+import CoreNFC
 import UIKit
 
 class AddEditItemViewController: UIViewController, MainViewController {
@@ -42,7 +43,8 @@ class AddEditItemViewController: UIViewController, MainViewController {
 
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(AddEditItemCell.self, forCellReuseIdentifier: AddEditItemCell.reuseIdentifier)
+        tableView.register(AddEditItemTextFieldCell.self, forCellReuseIdentifier: AddEditItemTextFieldCell.reuseIdentifier)
+        tableView.register(AddEditItemTextViewCell.self, forCellReuseIdentifier: AddEditItemTextViewCell.reuseIdentifier)
         tableView.separatorStyle = .none
         tableView.allowsSelection = false
     }
@@ -81,8 +83,27 @@ class AddEditItemViewController: UIViewController, MainViewController {
         present(UIAlertController.genericError(error), animated: true)
     }
 
+    func presentScanningAlert() {
+        let alert = UIAlertController(
+            title: "Are You Using an NFC Tag?",
+            message: "Watcha Got can write item data to empty NFC tags. If you have an NFC tag, tap \"Yes\" to use it to receive and ship items faster.",
+            preferredStyle: .alert
+        )
+        let noAction = UIAlertAction(title: "No", style: .default)
+        let yesAction = UIAlertAction(title: "Yes", style: .default, handler: beginNfcScanning(_:))
+        alert.addAction(noAction)
+        alert.addAction(yesAction)
+
+        present(alert, animated: true)
+    }
+
+    func beginNfcScanning(_ action: UIAlertAction) {
+        viewModel.beginNfcScanning()
+    }
+
     @objc func saveButtonTapped() {
-        viewModel.saveButtonTapped()
+        // TODO: Save Item to database before presenting scanning alert
+        presentScanningAlert()
     }
 
     @objc func cancelButtonTapped() {
@@ -99,9 +120,23 @@ extension AddEditItemViewController: UITableViewDelegate, UITableViewDataSource 
         let index = indexPath.row
 
         if index <= 1 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: AddEditItemCell.reuseIdentifier, for: indexPath) as! AddEditItemCell
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: AddEditItemTextFieldCell.reuseIdentifier,
+                for: indexPath
+            ) as! AddEditItemTextFieldCell
+            
             let textFieldType = AddEditItemTextFieldType.getType(withTag: index)
             cell.textField.delegate = self
+            cell.configure(textFieldType)
+            return cell
+        } else if index == 2 {
+            let cell = tableView.dequeueReusableCell(
+                withIdentifier: AddEditItemTextViewCell.reuseIdentifier,
+                for: indexPath
+            ) as! AddEditItemTextViewCell
+
+            let textFieldType = AddEditItemTextFieldType.getType(withTag: index)
+            cell.textView.delegate = self
             cell.configure(textFieldType)
             return cell
         } else {
@@ -110,8 +145,18 @@ extension AddEditItemViewController: UITableViewDelegate, UITableViewDataSource 
     }
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 75
+        let index = indexPath.row
+
+        switch index {
+        case AddEditItemTextFieldType.name.tag, AddEditItemTextFieldType.price.tag:
+            return 55
+        case AddEditItemTextFieldType.notes.tag:
+            return 100
+        default:
+            return 0
+        }
     }
+
 }
 
 extension AddEditItemViewController: UITextFieldDelegate {
@@ -125,6 +170,17 @@ extension AddEditItemViewController: UITextFieldDelegate {
             viewModel.itemName = textField.text ?? ""
         case AddEditItemTextFieldType.price.tag:
             viewModel.itemPrice = Double(textField.text ?? "") ?? 0.0
+        default:
+            break
+        }
+    }
+}
+
+extension AddEditItemViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        switch textView.tag {
+        case AddEditItemTextFieldType.notes.tag:
+            viewModel.itemNotes = textView.text ?? ""
         default:
             break
         }

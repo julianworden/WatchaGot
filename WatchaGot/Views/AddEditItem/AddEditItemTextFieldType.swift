@@ -10,6 +10,7 @@ import UIKit
 enum AddEditItemTextFieldType: CaseIterable {
     case name
     case price
+    case notes
 
     var tag: Int {
         switch self {
@@ -17,6 +18,8 @@ enum AddEditItemTextFieldType: CaseIterable {
             return 0
         case .price:
             return 1
+        case .notes:
+            return 2
         }
     }
 
@@ -26,12 +29,14 @@ enum AddEditItemTextFieldType: CaseIterable {
             return "Name"
         case .price:
             return "Price (\(Locale.current.currency?.identifier ?? "Your Currency"))"
+        case .notes:
+            return "Notes"
         }
     }
 
     var keyboardType: UIKeyboardType {
         switch self {
-        case .name:
+        case .name, .notes:
             return .default
         case .price:
             return .decimalPad

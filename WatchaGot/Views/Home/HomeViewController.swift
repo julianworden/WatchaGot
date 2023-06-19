@@ -10,9 +10,7 @@ import SwiftPlus
 import UIKit
 
 class HomeViewController: UIViewController, MainViewController {
-    lazy private var buttonStack = UIStackView(arrangedSubviews: [receiveButton, shipButton])
     lazy private var receiveButton = UIButton(configuration: .borderedProminentWithPaddedImage())
-    lazy private var shipButton = UIButton(configuration: .borderedProminentWithPaddedImage())
     lazy private var itemsTableView = UITableView()
 
     private var dataSource: UITableViewDiffableDataSource<HomeTableViewSection, Item>!
@@ -35,33 +33,25 @@ class HomeViewController: UIViewController, MainViewController {
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "Watcha Got?"
 
-        buttonStack.axis = .horizontal
-        buttonStack.spacing = 10
-        buttonStack.distribution = .fillEqually
-
-        receiveButton.setTitle("Receive", for: .normal)
+        receiveButton.setTitle("Receive New Item", for: .normal)
         receiveButton.setImage(UIImage(systemName: "tray.and.arrow.down"), for: .normal)
         receiveButton.addTarget(self, action: #selector(receiveButtonTapped), for: .touchUpInside)
 
-        shipButton.setTitle("Ship", for: .normal)
-        shipButton.setImage(UIImage(systemName: "tray.and.arrow.up"), for: .normal)
-
         itemsTableView.delegate = self
         itemsTableView.dataSource = dataSource
-        itemsTableView.separatorStyle = .none
-        itemsTableView.register(HomeTableViewCell.self, forCellReuseIdentifier: HomeTableViewCell.reuseIdentifier)
+        itemsTableView.register(HomeTableViewCell.self, forCellReuseIdentifier: Constants.homeTableViewCellReuseIdentifier)
     }
 
     func constrain() {
-        view.addConstrainedSubviews(buttonStack, itemsTableView)
+        view.addConstrainedSubviews(receiveButton, itemsTableView)
 
         NSLayoutConstraint.activate([
-            buttonStack.heightAnchor.constraint(equalToConstant: 50),
-            buttonStack.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            buttonStack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            buttonStack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            receiveButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            receiveButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            receiveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            receiveButton.heightAnchor.constraint(equalToConstant: 40),
 
-            itemsTableView.topAnchor.constraint(equalTo: buttonStack.bottomAnchor),
+            itemsTableView.topAnchor.constraint(equalTo: receiveButton.bottomAnchor, constant: 10),
             itemsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             itemsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             itemsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
@@ -104,12 +94,13 @@ class HomeViewController: UIViewController, MainViewController {
 extension HomeViewController: UITableViewDelegate, AddEditItemDiffableDataSourceDelegate {
     private func createDiffableDataSource() {
         let dataSource = AddEditItemDiffableDataSource(tableView: itemsTableView) { tableView, indexPath, item in
-            guard let cell = tableView.dequeueReusableCell(withIdentifier: HomeTableViewCell.reuseIdentifier) else {
+            guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.homeTableViewCellReuseIdentifier) else {
                 return UITableViewCell()
             }
 
-            var contentConfiguration = cell.defaultContentConfiguration()
+            var contentConfiguration = UIListContentConfiguration.subtitleCell()
             contentConfiguration.text = item.name
+            contentConfiguration.secondaryText = item.formattedPrice
             cell.contentConfiguration = contentConfiguration
             cell.accessoryType = .disclosureIndicator
             return cell

@@ -10,6 +10,8 @@
 		AB014EA62A3B3E550049AB59 /* ItemDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB014EA52A3B3E550049AB59 /* ItemDetailsViewController.swift */; };
 		AB014EA82A3B3ED60049AB59 /* ItemDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB014EA72A3B3ED60049AB59 /* ItemDetailsViewModel.swift */; };
 		AB014EAA2A3B41D30049AB59 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB014EA92A3B41D30049AB59 /* MainViewModel.swift */; };
+		AB0D7E0F2A3E6DC000B8F34D /* NfcError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0D7E0E2A3E6DC000B8F34D /* NfcError.swift */; };
+		AB0D7E112A3E703400B8F34D /* NfcService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB0D7E102A3E703400B8F34D /* NfcService.swift */; };
 		AB115F922A33738B00BD1B5A /* DatabaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB115F912A33738B00BD1B5A /* DatabaseService.swift */; };
 		AB1DEDD72A3400CC0013CEC8 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1DEDD62A3400CC0013CEC8 /* Constants.swift */; };
 		AB1DEDD92A3402300013CEC8 /* ApiEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1DEDD82A3402300013CEC8 /* ApiEndpoint.swift */; };
@@ -17,6 +19,7 @@
 		AB1DEDDB2A3403490013CEC8 /* MimeType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1DEDD52A3400820013CEC8 /* MimeType.swift */; };
 		AB1DEDDC2A3403490013CEC8 /* HttpMethod.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1DEDD42A3400820013CEC8 /* HttpMethod.swift */; };
 		AB1DEDE12A3404330013CEC8 /* HttpError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB1DEDE02A3404330013CEC8 /* HttpError.swift */; };
+		AB2416ED2A3CAA33007966CA /* AddEditItemTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB2416EC2A3CAA33007966CA /* AddEditItemTextFieldCell.swift */; };
 		AB37731E2A3A06A8000CBFC8 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB37731D2A3A06A8000CBFC8 /* MainViewController.swift */; };
 		AB3773202A3A06FC000CBFC8 /* UIAlertController+GenericError.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB37731F2A3A06FC000CBFC8 /* UIAlertController+GenericError.swift */; };
 		AB3B99912A31363200F117AB /* AddEditItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB3B99902A31363200F117AB /* AddEditItemViewController.swift */; };
@@ -26,7 +29,7 @@
 		AB47DD5C2A30CE5E001A16D3 /* UIButton.Configuration+borderedProminentWithPaddedImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB47DD5B2A30CE5E001A16D3 /* UIButton.Configuration+borderedProminentWithPaddedImage.swift */; };
 		AB6133D82A3818C10004BAA3 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6133D72A3818C10004BAA3 /* HomeViewModel.swift */; };
 		AB6133DA2A3819C20004BAA3 /* HomeTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6133D92A3819C20004BAA3 /* HomeTableViewCell.swift */; };
-		AB71DA4B2A321A2A00398075 /* AddEditItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB71DA4A2A321A2A00398075 /* AddEditItemCell.swift */; };
+		AB71DA4B2A321A2A00398075 /* AddEditItemTextViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB71DA4A2A321A2A00398075 /* AddEditItemTextViewCell.swift */; };
 		AB71DA4D2A321C0F00398075 /* AddEditItemTextFieldType.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB71DA4C2A321C0E00398075 /* AddEditItemTextFieldType.swift */; };
 		ABA9822D2A38AC8300670A5F /* AddEditItemViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABA9822C2A38AC8300670A5F /* AddEditItemViewControllerDelegate.swift */; };
 		ABB221D12A2FE2C500C4C1EB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB221D02A2FE2C500C4C1EB /* AppDelegate.swift */; };
@@ -34,6 +37,7 @@
 		ABB221D52A2FE2C500C4C1EB /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB221D42A2FE2C500C4C1EB /* HomeViewController.swift */; };
 		ABB221DA2A2FE2C500C4C1EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ABB221D92A2FE2C500C4C1EB /* Assets.xcassets */; };
 		ABB221DD2A2FE2C500C4C1EB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABB221DB2A2FE2C500C4C1EB /* LaunchScreen.storyboard */; };
+		ABB8BE592A3FDE2C0028A921 /* NfcAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB8BE582A3FDE2C0028A921 /* NfcAction.swift */; };
 		ABC804EA2A39F46A006527A7 /* AddEditItemDiffableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC804E92A39F46A006527A7 /* AddEditItemDiffableDataSource.swift */; };
 		ABC804EC2A39F4CF006527A7 /* HomeTableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC804EB2A39F4CF006527A7 /* HomeTableViewSection.swift */; };
 /* End PBXBuildFile section */
@@ -42,6 +46,9 @@
 		AB014EA52A3B3E550049AB59 /* ItemDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailsViewController.swift; sourceTree = "<group>"; };
 		AB014EA72A3B3ED60049AB59 /* ItemDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDetailsViewModel.swift; sourceTree = "<group>"; };
 		AB014EA92A3B41D30049AB59 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		AB0D7E0A2A3E696B00B8F34D /* WatchaGot.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = WatchaGot.entitlements; sourceTree = "<group>"; };
+		AB0D7E0E2A3E6DC000B8F34D /* NfcError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NfcError.swift; sourceTree = "<group>"; };
+		AB0D7E102A3E703400B8F34D /* NfcService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NfcService.swift; sourceTree = "<group>"; };
 		AB115F912A33738B00BD1B5A /* DatabaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseService.swift; sourceTree = "<group>"; };
 		AB1DEDD32A3400820013CEC8 /* HttpHeaders.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpHeaders.swift; sourceTree = "<group>"; };
 		AB1DEDD42A3400820013CEC8 /* HttpMethod.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpMethod.swift; sourceTree = "<group>"; };
@@ -49,6 +56,7 @@
 		AB1DEDD62A3400CC0013CEC8 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		AB1DEDD82A3402300013CEC8 /* ApiEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiEndpoint.swift; sourceTree = "<group>"; };
 		AB1DEDE02A3404330013CEC8 /* HttpError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = HttpError.swift; path = ../../../../Learning/CodeWithChrisVaporApp/CodeWithChrisVaporApp/Errors/HttpError.swift; sourceTree = "<group>"; };
+		AB2416EC2A3CAA33007966CA /* AddEditItemTextFieldCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditItemTextFieldCell.swift; sourceTree = "<group>"; };
 		AB37731D2A3A06A8000CBFC8 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		AB37731F2A3A06FC000CBFC8 /* UIAlertController+GenericError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIAlertController+GenericError.swift"; sourceTree = "<group>"; };
 		AB3B99902A31363200F117AB /* AddEditItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditItemViewController.swift; sourceTree = "<group>"; };
@@ -57,7 +65,7 @@
 		AB47DD5B2A30CE5E001A16D3 /* UIButton.Configuration+borderedProminentWithPaddedImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton.Configuration+borderedProminentWithPaddedImage.swift"; sourceTree = "<group>"; };
 		AB6133D72A3818C10004BAA3 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		AB6133D92A3819C20004BAA3 /* HomeTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewCell.swift; sourceTree = "<group>"; };
-		AB71DA4A2A321A2A00398075 /* AddEditItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditItemCell.swift; sourceTree = "<group>"; };
+		AB71DA4A2A321A2A00398075 /* AddEditItemTextViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditItemTextViewCell.swift; sourceTree = "<group>"; };
 		AB71DA4C2A321C0E00398075 /* AddEditItemTextFieldType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditItemTextFieldType.swift; sourceTree = "<group>"; };
 		ABA9822C2A38AC8300670A5F /* AddEditItemViewControllerDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditItemViewControllerDelegate.swift; sourceTree = "<group>"; };
 		ABB221CD2A2FE2C500C4C1EB /* WatchaGot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WatchaGot.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -67,6 +75,7 @@
 		ABB221D92A2FE2C500C4C1EB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		ABB221DC2A2FE2C500C4C1EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ABB221DE2A2FE2C500C4C1EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		ABB8BE582A3FDE2C0028A921 /* NfcAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NfcAction.swift; sourceTree = "<group>"; };
 		ABC804E92A39F46A006527A7 /* AddEditItemDiffableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditItemDiffableDataSource.swift; sourceTree = "<group>"; };
 		ABC804EB2A39F4CF006527A7 /* HomeTableViewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewSection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -96,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				AB115F912A33738B00BD1B5A /* DatabaseService.swift */,
+				AB0D7E102A3E703400B8F34D /* NfcService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -116,6 +126,7 @@
 			isa = PBXGroup;
 			children = (
 				AB1DEDE02A3404330013CEC8 /* HttpError.swift */,
+				AB0D7E0E2A3E6DC000B8F34D /* NfcError.swift */,
 			);
 			path = Errors;
 			sourceTree = "<group>";
@@ -166,7 +177,8 @@
 			children = (
 				AB3B99902A31363200F117AB /* AddEditItemViewController.swift */,
 				AB3B99942A31379C00F117AB /* AddEditItemViewModel.swift */,
-				AB71DA4A2A321A2A00398075 /* AddEditItemCell.swift */,
+				AB71DA4A2A321A2A00398075 /* AddEditItemTextViewCell.swift */,
+				AB2416EC2A3CAA33007966CA /* AddEditItemTextFieldCell.swift */,
 				AB71DA4C2A321C0E00398075 /* AddEditItemTextFieldType.swift */,
 			);
 			path = AddEditItem;
@@ -176,6 +188,7 @@
 			isa = PBXGroup;
 			children = (
 				AB3B99982A3137F200F117AB /* Item.swift */,
+				ABB8BE582A3FDE2C0028A921 /* NfcAction.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -199,6 +212,7 @@
 		ABB221CF2A2FE2C500C4C1EB /* WatchaGot */ = {
 			isa = PBXGroup;
 			children = (
+				AB0D7E0A2A3E696B00B8F34D /* WatchaGot.entitlements */,
 				ABB221D02A2FE2C500C4C1EB /* AppDelegate.swift */,
 				ABB221D22A2FE2C500C4C1EB /* SceneDelegate.swift */,
 				AB3B999A2A3137F400F117AB /* Model */,
@@ -292,6 +306,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				AB6133D82A3818C10004BAA3 /* HomeViewModel.swift in Sources */,
+				AB0D7E112A3E703400B8F34D /* NfcService.swift in Sources */,
+				AB2416ED2A3CAA33007966CA /* AddEditItemTextFieldCell.swift in Sources */,
 				AB3B99912A31363200F117AB /* AddEditItemViewController.swift in Sources */,
 				AB014EA82A3B3ED60049AB59 /* ItemDetailsViewModel.swift in Sources */,
 				AB1DEDDB2A3403490013CEC8 /* MimeType.swift in Sources */,
@@ -302,8 +318,10 @@
 				ABB221D52A2FE2C500C4C1EB /* HomeViewController.swift in Sources */,
 				AB37731E2A3A06A8000CBFC8 /* MainViewController.swift in Sources */,
 				AB6133DA2A3819C20004BAA3 /* HomeTableViewCell.swift in Sources */,
+				ABB8BE592A3FDE2C0028A921 /* NfcAction.swift in Sources */,
 				ABB221D12A2FE2C500C4C1EB /* AppDelegate.swift in Sources */,
 				AB3B99952A31379C00F117AB /* AddEditItemViewModel.swift in Sources */,
+				AB0D7E0F2A3E6DC000B8F34D /* NfcError.swift in Sources */,
 				AB1DEDDC2A3403490013CEC8 /* HttpMethod.swift in Sources */,
 				AB3B99992A3137F200F117AB /* Item.swift in Sources */,
 				ABA9822D2A38AC8300670A5F /* AddEditItemViewControllerDelegate.swift in Sources */,
@@ -312,7 +330,7 @@
 				AB1DEDE12A3404330013CEC8 /* HttpError.swift in Sources */,
 				ABC804EC2A39F4CF006527A7 /* HomeTableViewSection.swift in Sources */,
 				AB115F922A33738B00BD1B5A /* DatabaseService.swift in Sources */,
-				AB71DA4B2A321A2A00398075 /* AddEditItemCell.swift in Sources */,
+				AB71DA4B2A321A2A00398075 /* AddEditItemTextViewCell.swift in Sources */,
 				AB71DA4D2A321C0F00398075 /* AddEditItemTextFieldType.swift in Sources */,
 				ABB221D32A2FE2C500C4C1EB /* SceneDelegate.swift in Sources */,
 				AB1DEDD92A3402300013CEC8 /* ApiEndpoint.swift in Sources */,
@@ -458,6 +476,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WatchaGot/WatchaGot.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9LT5ZRK64X;
@@ -488,6 +507,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = WatchaGot/WatchaGot.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 9LT5ZRK64X;

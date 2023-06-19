@@ -15,4 +15,12 @@ final class ItemDetailsViewModel: MainViewModel {
     init(item: Item) {
         self.item = item
     }
+
+    func beginNfcScanning() {
+        do {
+            try NfcService.shared.startScanning(withAction: .read(item: item))
+        } catch {
+            self.error = error
+        }
+    }
 }

@@ -10,6 +10,7 @@ import UIKit
 
 class ItemDetailsViewController: UIViewController, MainViewController {
     lazy private var itemNameLabel = UILabel()
+    lazy private var shipButton = UIButton(configuration: .bordered())
 
     var viewModel: ItemDetailsViewModel!
     var cancellables = Set<AnyCancellable>()
@@ -26,14 +27,19 @@ class ItemDetailsViewController: UIViewController, MainViewController {
         view.backgroundColor = .systemBackground
 
         itemNameLabel.text = viewModel.item.name
+
+        shipButton.setTitle("Ship", for: .normal)
+        shipButton.addTarget(self, action: #selector(shipButtonTapped), for: .touchUpInside)
     }
 
     func constrain() {
-        view.addConstrainedSubview(itemNameLabel)
+        view.addConstrainedSubviews(itemNameLabel, shipButton)
 
         NSLayoutConstraint.activate([
             itemNameLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            itemNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            itemNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+
+            shipButton.topAnchor.constraint(equalTo: itemNameLabel.bottomAnchor)
         ])
     }
 
@@ -49,5 +55,9 @@ class ItemDetailsViewController: UIViewController, MainViewController {
 
     func showError(_ error: Error) {
         present(UIAlertController.genericError(error), animated: true)
+    }
+
+    @objc func shipButtonTapped() {
+        viewModel.beginNfcScanning()
     }
 }
