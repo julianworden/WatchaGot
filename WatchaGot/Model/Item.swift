@@ -11,11 +11,19 @@ struct Item: Codable, Hashable {
     let id: UUID?
     let name: String
     let price: Double
-    let hasTag: Bool
+    var hasTag: Bool
     let notes: String?
 
     var formattedPrice: String {
         return price.formatted(.currency(code: Locale.current.currency?.identifier ?? "USD"))
+    }
+
+    mutating func addTag() {
+        hasTag = true
+    }
+
+    mutating func removeTag() {
+        hasTag = false
     }
 
     static let example = Item(

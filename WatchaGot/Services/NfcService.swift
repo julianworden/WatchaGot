@@ -13,8 +13,10 @@ final class NfcService: NSObject, NFCNDEFReaderSessionDelegate {
     override private init() { }
 
     var nfcSession: NFCNDEFReaderSession?
+    /// The action that will be performed by `nfcSession`.
     var action: NfcAction?
-
+    
+    /// The first alert message shown when the `nfcSession` is displayed.
     var firstNfcSessionAlertMessage: String {
         switch action {
         case .read(_):
@@ -25,7 +27,9 @@ final class NfcService: NSObject, NFCNDEFReaderSessionDelegate {
             return ""
         }
     }
-
+    
+    /// Begins the `nfcSession` by initializing an `NFCNDEFReaderSession`.
+    /// - Parameter action: The action that the `nfcSession` will perform.
     func startScanning(withAction action: NfcAction) throws {
         guard NFCNDEFReaderSession.readingAvailable else {
             throw NfcError.scanningNotSupported
@@ -78,7 +82,10 @@ final class NfcService: NSObject, NFCNDEFReaderSessionDelegate {
     }
 
     func write(_ item: Item, to tag: NFCNDEFTag) {
-        guard let itemJson = try? JSONEncoder().encode(item) else {
+        var updatedItem = item
+        updatedItem.addTag()
+
+        guard let itemJson = try? JSONEncoder().encode(updatedItem) else {
             handleError(NfcError.jsonEncodingFailed)
             return
         }
@@ -87,15 +94,26 @@ final class NfcService: NSObject, NFCNDEFReaderSessionDelegate {
         let ndefMessage = NFCNDEFMessage(records: [ndefPayload])
 
         tag.writeNDEF(ndefMessage) { [weak self] error in
-            if error == nil {
-                self?.nfcSession?.alertMessage = "This item's data has been successfully written to your NFC tag."
-            } else {
-                self?.nfcSession?.alertMessage = NfcError.writeFailed.localizedDescription
+            guard error == nil else {
+                self?.handleError(.writeFailed)
                 print(error!)
+                return
             }
 
-            self?.nfcSession?.invalidate()
-            self?.postNfcScanningFinishedNotification()
+            self?.nfcSession?.alertMessage = "This item's data has been successfully written to your NFC tag. Updating item in database."
+
+            self?.saveTagStatusForItemToDatabase(updatedItem) { error in
+                guard error == nil else {
+                    self?.handleError(.databaseUpdateFailed)
+                    print(error!)
+                    return
+                }
+
+                self?.nfcSession?.alertMessage = "Database update successful."
+                self?.nfcSession?.invalidate()
+
+                self?.postNfcScanningFinishedNotification(for: updatedItem)
+            }
         }
     }
 
@@ -124,20 +142,54 @@ final class NfcService: NSObject, NFCNDEFReaderSessionDelegate {
             }
 
             self?.nfcSession?.invalidate()
-            self?.postNfcScanningFinishedNotification()
+            self?.postNfcScanningFinishedNotification(for: nil)
         }
     }
+    
+    /// Sets the `hasTag` property for a given `Item` to `true` and updates that item in the database.
+    /// - Parameters:
+    ///   - item: The `Item` that is to be updated.
+    ///   - completion: Code to run after the `Item` is successfully updated in the database.
+    func saveTagStatusForItemToDatabase(_ item: Item, completion: @escaping (Error?) -> Void) {
+        DatabaseService.shared.updateData(update: item, at: Constants.apiItemsUrl) { _, error in
+            guard error == nil else {
+                completion(error)
+                return
+            }
 
+            completion(nil)
+        }
+    }
+    
+    /// Handles a given error by displaying an accurage `alertMessage` for the active `nfcSession` and then invalidating
+    /// the active `nfcSession`.  Also calls `postNfcScanningFinishedNotification` to notify view controllers
+    /// that the session has finished.
+    /// - Parameter error: The error that is to be handled.
     func handleError(_ error: NfcError) {
         nfcSession?.alertMessage = error.localizedDescription
         nfcSession?.invalidate()
-        postNfcScanningFinishedNotification()
+        postNfcScanningFinishedNotification(for: nil)
     }
 
-    func postNfcScanningFinishedNotification() {
-        NotificationCenter.default.post(name: .nfcSessionFinished, object: nil)
+    
+    /// Posts the `nfcSessionFinished` notification to notify views that the `nfcSession` has concluded.
+    /// - Parameter item: The `Item` to be sent to the view receiving the notification.
+    func postNfcScanningFinishedNotification(for item: Item?) {
+        if let item {
+            NotificationCenter.default.post(
+                name: .nfcSessionFinished,
+                object: nil,
+                userInfo: [Constants.item: item]
+            )
+        } else {
+            NotificationCenter.default.post(
+                name: .nfcSessionFinished,
+                object: nil
+            )
+        }
     }
 
+    // TODO: Do something here
     func readerSession(_ session: NFCNDEFReaderSession, didInvalidateWithError error: Error) {
         print("ERROR WHEN INVALIDATING: \(error)")
     }

@@ -44,4 +44,20 @@ final class HomeViewModel: MainViewModel {
             self.error = error
         }
     }
+
+    func addItemToItemsArray(_ item: Item) {
+        DispatchQueue.main.async { [weak self] in
+            self?.items.append(item)
+            self?.items.sort { $0.name < $1.name }
+        }
+    }
+
+    func updateItemInItemsArray(_ updatedItem: Item) {
+        DispatchQueue.main.async { [weak self] in
+            if let itemIndex = self?.items.firstIndex(where: { $0.id == updatedItem.id }) {
+                self?.items.remove(at: itemIndex)
+                self?.items.insert(updatedItem, at: itemIndex)
+            }
+        }
+    }
 }

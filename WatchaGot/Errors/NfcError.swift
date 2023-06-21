@@ -21,6 +21,7 @@ enum NfcError: LocalizedError {
     case writeFailed
     case unknownNdefStatus
     case tagIsEmpty
+    case databaseUpdateFailed
 
     var errorDescription: String? {
         switch self {
@@ -50,6 +51,8 @@ enum NfcError: LocalizedError {
             return "An unknown NDEF status was found. Please contact support."
         case .tagIsEmpty:
             return "The NFC tag you're attempting to read from has no data on it. Please try again with an NFC tag that is not empty."
+        case .databaseUpdateFailed:
+            return "Failed to update this item's status in database. Please contact support."
         }
     }
 }

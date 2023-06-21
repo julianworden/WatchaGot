@@ -65,6 +65,36 @@ final class DatabaseService {
         }
     }
 
+    func updateData<T: Codable>(update data: T, at url: URL, completion: @escaping (T?, Error?) -> Void) {
+        do {
+            let jsonData = try JSONEncoder().encode(data)
+            var urlRequest = URLRequest(url: url)
+            urlRequest.httpMethod = HttpMethod.PUT.rawValue
+            urlRequest.httpBody = jsonData
+            urlRequest.addValue(MimeType.json.rawValue, forHTTPHeaderField: HttpHeader.contentType.rawValue)
+
+            URLSession.shared.dataTask(with: urlRequest) { [weak self] data, response, error in
+                self?.handleErrorAndReponse(error: error, response: response, completion: { thrownError in
+                    guard thrownError == nil else {
+                        completion(nil, thrownError)
+                        return
+                    }
+
+                    if let data,
+                       let decodedData = try? JSONDecoder().decode(T.self, from: data) {
+                        completion(decodedData, nil)
+                    } else {
+                        completion(nil, HttpError.decodingFailed)
+                    }
+                })
+            }
+            .resume()
+            
+        } catch {
+            completion(nil, error)
+        }
+    }
+
     func deleteData(at url: URL, completion: @escaping (Error?) -> Void) {
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = HttpMethod.DELETE.rawValue

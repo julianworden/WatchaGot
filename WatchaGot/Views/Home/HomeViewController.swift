@@ -62,7 +62,8 @@ class HomeViewController: UIViewController, MainViewController {
         viewModel.$items
             .sink { [weak self] items in
 
-                let sortedItems = items.sorted { $0.name.lowercased() < $1.name.lowercased() }
+                // Sort is needed here because sometimes items array updates before it's sorted.
+                let sortedItems = items.sorted { $0.name < $1.name }
                 self?.updateDiffableDataSource(with: sortedItems)
             }
             .store(in: &cancellables)
@@ -98,11 +99,16 @@ extension HomeViewController: UITableViewDelegate, AddEditItemDiffableDataSource
                 return UITableViewCell()
             }
 
-            var contentConfiguration = UIListContentConfiguration.subtitleCell()
+            var contentConfiguration = UIListContentConfiguration.accompaniedSidebarSubtitleCell()
             contentConfiguration.text = item.name
             contentConfiguration.secondaryText = item.formattedPrice
             cell.contentConfiguration = contentConfiguration
-            cell.accessoryType = .disclosureIndicator
+            if item.hasTag {
+                let tagImage = UIImage(systemName: "tag")
+                let tagImageView = UIImageView(image: tagImage)
+                tagImageView.tintColor = .systemGreen
+                cell.accessoryView = tagImageView
+            }
             return cell
         }
 
@@ -134,9 +140,12 @@ extension HomeViewController: UITableViewDelegate, AddEditItemDiffableDataSource
 
 extension HomeViewController: AddEditItemViewControllerDelegate {
     func addEditItemViewController(didCreateItem item: Item) {
-        viewModel.items.append(item)
+        viewModel.addItemToItemsArray(item)
     }
 
+    func addEditItemViewController(didUpdateItem item: Item) {
+        viewModel.updateItemInItemsArray(item)
+    }
 }
 
 #Preview {

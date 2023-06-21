@@ -9,6 +9,7 @@ import CoreNFC
 import UIKit
 
 final class AddEditItemViewModel: MainViewModel {
+    /// The `Item` that is updated or created by `saveButtonTapped()`.
     @Published var updatedItem: Item?
     @Published var error: Error?
 
@@ -27,7 +28,8 @@ final class AddEditItemViewModel: MainViewModel {
     init(itemToEdit: Item? = nil) {
         self.itemToEdit = itemToEdit
     }
-
+    
+    /// Starts the `NFCNDEFReaderSession` for writing to an NFC tag.
     func beginNfcScanning() {
         do {
             if itemToEdit == nil,

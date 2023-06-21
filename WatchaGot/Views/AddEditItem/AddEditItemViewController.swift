@@ -61,6 +61,7 @@ class AddEditItemViewController: UIViewController, MainViewController {
     }
 
     func subscribeToPublishers() {
+        // New value published when user successfully creates new item
         viewModel.$updatedItem
             .sink { [weak self] updatedItem in
                 guard let updatedItem else { return }
@@ -79,10 +80,19 @@ class AddEditItemViewController: UIViewController, MainViewController {
             .store(in: &cancellables)
 
         NotificationCenter.default.publisher(for: .nfcSessionFinished)
-            .sink { [weak self] _ in
-                DispatchQueue.main.async {
+            .sink { [weak self] notification in
+                guard let userInfo = notification.userInfo else {
                     self?.dismissView()
+                    return
                 }
+
+                // The item that was updated during the NFC session.
+                if let updatedItem = userInfo[Constants.item] as? Item {
+                    // Update the items array in HomeViewController.
+                    self?.delegate?.addEditItemViewController(didUpdateItem: updatedItem)
+                }
+
+                self?.dismissView()
             }
             .store(in: &cancellables)
     }
@@ -105,17 +115,21 @@ class AddEditItemViewController: UIViewController, MainViewController {
 
         present(alert, animated: true)
     }
-
+    
+    /// Called when a user expresses they do not have an NFC tag to use.
     func noNfcTagButtonTapped(_ action: UIAlertAction) {
         dismissView()
     }
-
+    
+    /// Called when a user expresses they do have an NFC tag to use.
     func yesNfcTagButtonTapped(_ action: UIAlertAction) {
         viewModel.beginNfcScanning()
     }
 
     func dismissView() {
-        dismiss(animated: true)
+        DispatchQueue.main.async { [weak self] in
+            self?.dismiss(animated: true)
+        }
     }
 
     @objc func saveButtonTapped() {

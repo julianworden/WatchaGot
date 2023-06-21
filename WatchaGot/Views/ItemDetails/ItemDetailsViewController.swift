@@ -25,6 +25,7 @@ class ItemDetailsViewController: UIViewController, MainViewController {
 
     func configure() {
         view.backgroundColor = .systemBackground
+        title = "Item Details"
 
         itemNameLabel.text = viewModel.item.name
 
@@ -60,4 +61,11 @@ class ItemDetailsViewController: UIViewController, MainViewController {
     @objc func shipButtonTapped() {
         viewModel.beginNfcScanning()
     }
+}
+
+#Preview {
+    let itemDetailsViewController = ItemDetailsViewController()
+    let itemDetailsViewModel = ItemDetailsViewModel(item: Item.example)
+    itemDetailsViewController.viewModel = itemDetailsViewModel
+    return UINavigationController(rootViewController: itemDetailsViewController)
 }

@@ -9,4 +9,5 @@ import Foundation
 
 protocol AddEditItemViewControllerDelegate: AnyObject {
     func addEditItemViewController(didCreateItem item: Item)
+    func addEditItemViewController(didUpdateItem item: Item)
 }
