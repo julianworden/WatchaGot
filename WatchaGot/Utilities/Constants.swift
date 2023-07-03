@@ -9,7 +9,8 @@ import Foundation
 
 enum Constants {
     static let item = "item"
-    
+    static let nfcAction = "nfcAction"
+
     static let apiUrl = URL(string: "https://watchagot.herokuapp.com")!
     static var apiItemsUrl: URL {
         return apiUrl.appending(path: ApiEndpoint.items)

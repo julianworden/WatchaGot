@@ -25,6 +25,11 @@ class HomeViewController: UIViewController, MainViewController {
         configure()
         constrain()
         subscribeToPublishers()
+    }
+
+    override func viewIsAppearing(_ animated: Bool) {
+        super.viewIsAppearing(animated)
+
         viewModel.fetchItems()
     }
 
@@ -57,7 +62,7 @@ class HomeViewController: UIViewController, MainViewController {
             itemsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
-    
+
     func subscribeToPublishers() {
         viewModel.$items
             .sink { [weak self] items in

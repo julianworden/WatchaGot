@@ -18,7 +18,22 @@ final class ItemDetailsViewModel: MainViewModel {
 
     func beginNfcScanning() {
         do {
-            try NfcService.shared.startScanning(withAction: .read(item: item))
+            try NfcService.shared.startScanning(withAction: .delete(item: item))
+        } catch {
+            self.error = error
+        }
+    }
+
+    func deleteItemFromDatabase(_ item: Item, completion: @escaping () -> Void) {
+        do {
+            DatabaseService.shared.deleteData(at: try Constants.getApiUrl(for: item)) { [weak self] error in
+                guard error == nil else {
+                    self?.error = error
+                    return
+                }
+
+                completion()
+            }
         } catch {
             self.error = error
         }

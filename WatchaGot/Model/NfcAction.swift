@@ -8,6 +8,6 @@
 import Foundation
 
 enum NfcAction {
-    case read(item: Item)
     case write(item: Item)
+    case delete(item: Item)
 }

@@ -86,10 +86,13 @@ class AddEditItemViewController: UIViewController, MainViewController {
                     return
                 }
 
-                // The item that was updated during the NFC session.
-                if let updatedItem = userInfo[Constants.item] as? Item {
-                    // Update the items array in HomeViewController.
-                    self?.delegate?.addEditItemViewController(didUpdateItem: updatedItem)
+                if let nfcAction = userInfo[Constants.nfcAction] as? NfcAction {
+                    switch nfcAction {
+                    case .write(let item):
+                        self?.delegate?.addEditItemViewController(didUpdateItem: item)
+                    default:
+                        break
+                    }
                 }
 
                 self?.dismissView()
@@ -108,8 +111,8 @@ class AddEditItemViewController: UIViewController, MainViewController {
             message: "Watcha Got can write item data to empty NFC tags. If you have an NFC tag, tap \"Yes\" to use it to receive and ship items faster.",
             preferredStyle: .alert
         )
-        let noAction = UIAlertAction(title: "No", style: .default, handler: noNfcTagButtonTapped(_:))
-        let yesAction = UIAlertAction(title: "Yes", style: .default, handler: yesNfcTagButtonTapped(_:))
+        let noAction = UIAlertAction(title: "No", style: .default, handler: noNfcTagButtonTapped)
+        let yesAction = UIAlertAction(title: "Yes", style: .default, handler: yesNfcTagButtonTapped)
         alert.addAction(noAction)
         alert.addAction(yesAction)
 
