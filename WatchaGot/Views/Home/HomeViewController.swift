@@ -35,7 +35,7 @@ class HomeViewController: UIViewController, MainViewController {
 
     func configure() {
         view.backgroundColor = .systemBackground
-        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationItem.largeTitleDisplayMode = .always
         title = "Watcha Got?"
 
         receiveButton.setTitle("Receive New Item", for: .normal)

@@ -11,7 +11,8 @@ final class NfcService: NSObject, NFCNDEFReaderSessionDelegate {
     static let shared = NfcService()
 
     override private init() { }
-
+    
+    /// The session that hosts all of the work performed by `NfcService`.
     var nfcSession: NFCNDEFReaderSession?
     /// The action that will be performed by `nfcSession`.
     var action: NfcAction?

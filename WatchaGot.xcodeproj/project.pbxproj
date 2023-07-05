@@ -41,6 +41,7 @@
 		ABB8BE592A3FDE2C0028A921 /* NfcAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB8BE582A3FDE2C0028A921 /* NfcAction.swift */; };
 		ABC804EA2A39F46A006527A7 /* AddEditItemDiffableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC804E92A39F46A006527A7 /* AddEditItemDiffableDataSource.swift */; };
 		ABC804EC2A39F4CF006527A7 /* HomeTableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC804EB2A39F4CF006527A7 /* HomeTableViewSection.swift */; };
+		ABDD33382A55AC6400A5A646 /* UIFont+boldLargeTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDD33372A55AC6400A5A646 /* UIFont+boldLargeTitle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -80,6 +81,7 @@
 		ABB8BE582A3FDE2C0028A921 /* NfcAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NfcAction.swift; sourceTree = "<group>"; };
 		ABC804E92A39F46A006527A7 /* AddEditItemDiffableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditItemDiffableDataSource.swift; sourceTree = "<group>"; };
 		ABC804EB2A39F4CF006527A7 /* HomeTableViewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewSection.swift; sourceTree = "<group>"; };
+		ABDD33372A55AC6400A5A646 /* UIFont+boldLargeTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+boldLargeTitle.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -158,6 +160,7 @@
 				AB47DD5B2A30CE5E001A16D3 /* UIButton.Configuration+borderedProminentWithPaddedImage.swift */,
 				AB37731F2A3A06FC000CBFC8 /* UIAlertController+GenericError.swift */,
 				AB5826BD2A4088DA00EF0866 /* NotificationCenter.Name+CustomNames.swift */,
+				ABDD33372A55AC6400A5A646 /* UIFont+boldLargeTitle.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -312,6 +315,7 @@
 				AB0D7E112A3E703400B8F34D /* NfcService.swift in Sources */,
 				AB2416ED2A3CAA33007966CA /* AddEditItemTextFieldCell.swift in Sources */,
 				AB5826BE2A4088DA00EF0866 /* NotificationCenter.Name+CustomNames.swift in Sources */,
+				ABDD33382A55AC6400A5A646 /* UIFont+boldLargeTitle.swift in Sources */,
 				AB3B99912A31363200F117AB /* AddEditItemViewController.swift in Sources */,
 				AB014EA82A3B3ED60049AB59 /* ItemDetailsViewModel.swift in Sources */,
 				AB1DEDDB2A3403490013CEC8 /* MimeType.swift in Sources */,

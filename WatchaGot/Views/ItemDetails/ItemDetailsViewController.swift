@@ -9,8 +9,19 @@ import Combine
 import UIKit
 
 class ItemDetailsViewController: UIViewController, MainViewController {
+    lazy private var textStackView = UIStackView(
+        arrangedSubviews: [itemNameLabel, itemPriceLabel, itemNotesLabel]
+    )
     lazy private var itemNameLabel = UILabel()
-    lazy private var shipButton = UIButton(configuration: .bordered())
+    lazy private var itemPriceLabel = UILabel()
+    lazy private var itemNotesLabel = UILabel()
+    lazy private var shipButton = UIButton(configuration: .borderedProminent())
+    lazy private var editButton = UIBarButtonItem(
+        title: "Edit",
+        style: .plain,
+        target: self,
+        action: #selector(editButtonTapped)
+    )
 
     var viewModel: ItemDetailsViewModel!
     var cancellables = Set<AnyCancellable>()
@@ -26,8 +37,25 @@ class ItemDetailsViewController: UIViewController, MainViewController {
     func configure() {
         view.backgroundColor = .systemBackground
         title = "Item Details"
+        navigationItem.largeTitleDisplayMode = .never
+        navigationItem.rightBarButtonItem = editButton
+
+        textStackView.axis = .vertical
+        textStackView.spacing = 6
 
         itemNameLabel.text = viewModel.item.name
+        itemNameLabel.font = UIFontMetrics(forTextStyle: .largeTitle).scaledFont(for: UIFont.boldLargeTitle)
+        itemNameLabel.adjustsFontForContentSizeCategory = true
+
+        itemPriceLabel.text = viewModel.item.formattedPrice
+        itemPriceLabel.font = .preferredFont(forTextStyle: .body)
+        itemPriceLabel.textColor = .secondaryLabel
+        itemPriceLabel.adjustsFontForContentSizeCategory = true
+
+        itemNotesLabel.text = viewModel.item.notes
+        itemNotesLabel.font = .preferredFont(forTextStyle: .body)
+        itemNotesLabel.numberOfLines = 0
+        itemNotesLabel.adjustsFontForContentSizeCategory = true
 
         shipButton.setTitle("Ship", for: .normal)
         // TODO: This button shouldn't show this alert if the item has no tag
@@ -35,13 +63,17 @@ class ItemDetailsViewController: UIViewController, MainViewController {
     }
 
     func constrain() {
-        view.addConstrainedSubviews(itemNameLabel, shipButton)
+        view.addConstrainedSubviews(textStackView, shipButton)
+
+        itemNotesLabel.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
-            itemNameLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            itemNameLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            textStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            textStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            textStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
 
-            shipButton.topAnchor.constraint(equalTo: itemNameLabel.bottomAnchor)
+            shipButton.topAnchor.constraint(equalTo: textStackView.bottomAnchor, constant: 10),
+            shipButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
         ])
     }
 
@@ -97,6 +129,10 @@ class ItemDetailsViewController: UIViewController, MainViewController {
         alert.addAction(startScanningAction)
 
         present(alert, animated: true)
+    }
+
+    @objc func editButtonTapped() {
+
     }
 
     func shipAlertConfirmed(_ action: UIAlertAction) {

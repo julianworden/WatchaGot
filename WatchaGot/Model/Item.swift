@@ -31,7 +31,7 @@ struct Item: Codable, Hashable {
         name: "Couch",
         price: 499.99,
         hasTag: true,
-        notes: "Beautiful leather couch."
+        notes: "This couch is such a great couch! It will absolutely fix all of your problems, even the ones you didn’t know you had."
     )
 
     internal init(
