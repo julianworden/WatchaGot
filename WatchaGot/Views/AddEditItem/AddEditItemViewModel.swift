@@ -40,7 +40,9 @@ final class AddEditItemViewModel: MainViewModel {
             self.error = error
         }
     }
-
+    
+    /// Saves the new or updated item to the database. If this operation completes successfully, it will use the `updatedItem`
+    /// property to prompt the user to either update an existing NFC tag or to add the item's data to a new NFC tag.
     func saveButtonTapped() {
         if itemToEdit == nil {
             let newItem = Item(

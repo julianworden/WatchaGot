@@ -53,9 +53,106 @@ final class NfcService: NSObject, NFCNDEFReaderSessionDelegate {
         }
 
         let tag = tags.first!
+        connectSessionToTag(connect: session, to: tag) { [weak self] error in
+            guard error == nil else {
+                self?.handleError(error!)
+                return
+            }
+
+            return
+        }
+    }
+    
+    /// Writes a given `Item`'s data to a given `NFCNDEFTag`. This method will only complete successfully if the `tag` is empty.
+    /// - Parameters:
+    ///   - item: The item to be written to the `tag`.
+    ///   - tag: The tag that will receive the `item`'s data.
+    func write(_ item: Item, to tag: NFCNDEFTag) {
+        checkIfTagIsEmpty(tag) { [weak self] isEmpty, _, error in
+            guard error == nil else {
+                self?.handleError(.unknown(error: error!))
+                return
+            }
+
+            guard let isEmpty,
+                  isEmpty == true else {
+                self?.handleError(.tagIsNotEmpty)
+                return
+            }
+
+            var updatedItem = item
+            updatedItem.addTag()
+
+            self?.writeNdefMessageToTag(write: updatedItem, to: tag) { error in
+                guard error == nil else {
+                    self?.handleError(error!)
+                    return
+                }
+
+                DatabaseService.shared.updateData(update: updatedItem, at: Constants.apiItemsUrl) { _, error in
+                    guard error == nil else {
+                        self?.handleError(NfcError.databaseUpdateFailed)
+                        return
+                    }
+
+                    self?.invalidateSuccessfulSession(
+                        invalidate: self?.nfcSession,
+                        withAlertMessage: "Database update successful.",
+                        and: .write(item: updatedItem)
+                    )
+                }
+            }
+        }
+    }
+    
+    /// Deletes a given `Item`'s data from a given `NFCNDEFTag`. This method will only complete successfully if the `tag` is not empty.
+    /// - Parameters:
+    ///   - itemToDelete: The item to delete from the `tag`.
+    ///   - tag: The tag that will have `itemToDelete`'s data deleted from it.
+    func delete(_ itemToDelete: Item, from tag: NFCNDEFTag) {
+        checkIfTagIsEmpty(tag) { [weak self] isEmpty, itemOnTag, error in
+            guard error == nil else {
+                self?.handleError(.unknown(error: error!))
+                return
+            }
+            
+            guard let isEmpty,
+                  isEmpty == false,
+                  let itemOnTag else {
+                self?.handleError(.tagIsEmpty)
+                return
+            }
+
+            guard itemOnTag.id == itemToDelete.id else {
+                self?.handleError(.readingUnexpectedItemFromTag(expectedItem: itemToDelete, foundItem: itemOnTag))
+                return
+            }
+
+            self?.writeEmptyNdefMessageToTag(tag, for: itemToDelete) { error in
+                guard error == nil else {
+                    self?.handleError(error!)
+                    return
+                }
+
+                self?.invalidateSuccessfulSession(
+                    invalidate: self?.nfcSession,
+                    withAlertMessage: "Delete successful, this NFC tag is now empty.",
+                    and: .delete(item: itemToDelete)
+                )
+            }
+        }
+    }
+    
+    /// Connects a given `NFCNDEFReaderSession` to a given `NFCNDEFTag`. If a connection is successfully established, this method will evaluate
+    /// which `NfcService` method it should run depending on the value of `action`.
+    /// - Parameters:
+    ///   - session: The session to connect to the `tag`.
+    ///   - tag: The tag to which the `session` will attempt a connection.
+    ///   - completion: Code to run when this method either successfully connects  the `tag` to the `session` or fails due to an error.
+    func connectSessionToTag(connect session: NFCNDEFReaderSession, to tag: NFCNDEFTag, completion: @escaping (NfcError?) -> Void) {
         session.connect(to: tag) { [weak self] error in
             guard error == nil else {
-                self?.handleError(.connectionFailed)
+                completion(.connectionFailed)
                 return
             }
 
@@ -67,131 +164,88 @@ final class NfcService: NSObject, NFCNDEFReaderSessionDelegate {
 
                 switch (ndefStatus, self?.action) {
                 case (.notSupported, _):
-                    self?.handleError(.unsupportedTag)
+                    completion(.unsupportedTag)
                 case (.readWrite, .write(let item)):
                     self?.write(item, to: tag)
                 case (.readWrite, .delete(let item)):
                     self?.delete(item, from: tag)
                 case (.readOnly, _):
-                    self?.handleError(.tagIsReadOnly)
+                    completion(.tagIsReadOnly)
                 default:
-                    self?.handleError(.unknownNdefStatus)
+                    completion(.unknownNdefStatus)
                 }
             }
         }
     }
+    
+    /// Attempts to write a given `Item`'s data to a given `NFCNDEFTag`. If this method completes successfully, the given `Item`'s data will be written to
+    /// the given `NFCNDEFTag` as an `NFCNDEFMessage`.
+    /// - Parameters:
+    ///   - item: The item to write to the tag.
+    ///   - tag: The tag on which the `item`'s data will be written.
+    ///   - completion: Code to run when this method either successfully writes the `item`'s data to the `tag` or fails due to an error.
+    func writeNdefMessageToTag(write item: Item, to tag: NFCNDEFTag, completion: @escaping (NfcError?) -> Void) {
+        guard let itemJson = try? JSONEncoder().encode(item) else {
+            completion(.jsonEncodingFailed)
+            return
+        }
 
-    func write(_ item: Item, to tag: NFCNDEFTag) {
-        checkIfTagIsEmpty(tag) { [weak self] isEmpty, _, error in
+        let ndefPayload = NFCNDEFPayload(
+            format: .unknown,
+            type: Data(),
+            identifier: Data(),
+            payload: itemJson
+        )
+
+        let ndefMessage = NFCNDEFMessage(records: [ndefPayload])
+
+        tag.writeNDEF(ndefMessage) { [weak self] error in
             guard error == nil else {
-                self?.handleError(.unknown(error: error!))
+                completion(.writeFailed)
+                print(error!)
                 return
             }
 
-            guard isEmpty else {
-                self?.handleError(.tagIsNotEmpty)
-                return
-            }
+            self?.nfcSession?.alertMessage = "This item's data has been successfully written to your NFC tag. Updating item in database."
 
-            var updatedItem = item
-            updatedItem.addTag()
-
-            guard let itemJson = try? JSONEncoder().encode(updatedItem) else {
-                self?.handleError(NfcError.jsonEncodingFailed)
-                return
-            }
-
-            let ndefPayload = NFCNDEFPayload(
-                format: .unknown,
+            completion(nil)
+        }
+    }
+    
+    /// Writes an empty `NFCNDEFMessage` to a given `NFCNDEFTag`. The functionality contained in this method appears to be the best way
+    /// to delete data from an `NFCNDEFTag`, as Apple doesn't seem to provide a method for doing this.
+    /// - Parameters:
+    ///   - tag: The tag that is to have its data erased.
+    ///   - item: The item that is to be erased from the `tag`.
+    ///   - completion: Code to run when this method either successfully deletes the `item`'s data from the `tag` or fails due to an error.
+    func writeEmptyNdefMessageToTag(_ tag: NFCNDEFTag, for item: Item, completion: @escaping (NfcError?) -> Void) {
+        let emptyNdefMessage = NFCNDEFMessage(
+            records: [NFCNDEFPayload(
+                format: .empty,
                 type: Data(),
                 identifier: Data(),
-                payload: itemJson
-            )
+                payload: Data()
+            )]
+        )
 
-            let ndefMessage = NFCNDEFMessage(records: [ndefPayload])
-
-            tag.writeNDEF(ndefMessage) { [weak self] error in
-                guard error == nil else {
-                    self?.handleError(.writeFailed)
-                    print(error!)
-                    return
-                }
-
-                self?.nfcSession?.alertMessage = "This item's data has been successfully written to your NFC tag. Updating item in database."
-
-                self?.saveTagStatusForItemToDatabase(updatedItem) { error in
-                    guard error == nil else {
-                        self?.handleError(.databaseUpdateFailed)
-                        print(error!)
-                        return
-                    }
-
-                    self?.nfcSession?.alertMessage = "Database update successful."
-                    self?.nfcSession?.invalidate()
-
-                    self?.postNfcScanningFinishedNotification(withAction: .write(item: updatedItem))
-                }
-            }
-        }
-    }
-
-    func delete(_ itemToDelete: Item, from tag: NFCNDEFTag) {
-        checkIfTagIsEmpty(tag) { [weak self] isEmpty, itemOnTag, error in
+        tag.writeNDEF(emptyNdefMessage) { error in
             guard error == nil else {
-                self?.handleError(.unknown(error: error!))
-                return
-            }
-            
-            guard !isEmpty,
-                  let itemOnTag else {
-                self?.handleError(.tagIsEmpty)
-                return
-            }
-
-            guard itemOnTag.id == itemToDelete.id else {
-                self?.handleError(.readingUnexpectedItemFromTag(expectedItem: itemToDelete, foundItem: itemOnTag))
-                return
-            }
-
-            let emptyNdefMessage = NFCNDEFMessage(
-                records: [NFCNDEFPayload(
-                    format: .empty,
-                    type: Data(),
-                    identifier: Data(),
-                    payload: Data()
-                )]
-            )
-
-            tag.writeNDEF(emptyNdefMessage) { error in
-                guard error == nil else {
-                    self?.handleError(.writeFailed)
-                    print(error!)
-                    return
-                }
-
-                self?.nfcSession?.alertMessage = "Delete successful, this NFC tag is now empty."
-                self?.nfcSession?.invalidate()
-                self?.postNfcScanningFinishedNotification(withAction: .delete(item: itemToDelete))
-            }
-        }
-    }
-
-    /// Sets the `hasTag` property for a given `Item` to `true` and updates that item in the database.
-    /// - Parameters:
-    ///   - item: The `Item` that is to be updated.
-    ///   - completion: Code to run after the `Item` is successfully updated in the database.
-    func saveTagStatusForItemToDatabase(_ item: Item, completion: @escaping (Error?) -> Void) {
-        DatabaseService.shared.updateData(update: item, at: Constants.apiItemsUrl) { _, error in
-            guard error == nil else {
-                completion(error)
+                completion(.writeFailed)
+                print(error!)
                 return
             }
 
             completion(nil)
         }
     }
-
-    func checkIfTagIsEmpty(_ tag: NFCNDEFTag, completion: @escaping (Bool, Item?, Error?) -> Void) {
+    
+    /// Checks if a given `NFCNDEFTag` has any `Item`'s data on it.
+    /// - Parameters:
+    ///   - tag: The tag to be checked.
+    ///   - completion: Code to run when this method either successfully evaluates the data on the `tag` or fails due to an error. If this method does not fail,
+    ///   `completion` will receive the `Item` found on the tag, along with a `Bool` indicating whether or not the `tag` is empty. If this method does fail,
+    ///   `completion` will receive the `Error` that was encountered.
+    func checkIfTagIsEmpty(_ tag: NFCNDEFTag, completion: @escaping (Bool?, Item?, Error?) -> Void) {
         tag.readNDEF { ndefMessage, error in
             guard let ndefMessage else {
                 completion(true, nil, nil)
@@ -199,7 +253,7 @@ final class NfcService: NSObject, NFCNDEFReaderSessionDelegate {
             }
 
             guard error == nil else {
-                completion(false, nil, error)
+                completion(nil, nil, error)
                 return
             }
 
@@ -213,19 +267,25 @@ final class NfcService: NSObject, NFCNDEFReaderSessionDelegate {
         }
     }
 
+    func invalidateSuccessfulSession(invalidate session: NFCNDEFReaderSession?, withAlertMessage alertMessage: String, and action: NfcAction) {
+        session?.invalidate()
+        session?.alertMessage = alertMessage
+
+        postNfcScanningFinishedNotification(withAction: action)
+    }
+
     /// Handles a given error by displaying an accurage `alertMessage` for the active `nfcSession` and then invalidating
     /// the active `nfcSession`.  Also calls `postNfcScanningFinishedNotification` to notify view controllers
     /// that the session has finished.
     /// - Parameter error: The error that is to be handled.
     func handleError(_ error: NfcError) {
-        nfcSession?.alertMessage = error.localizedDescription
-        nfcSession?.invalidate()
+        nfcSession?.invalidate(errorMessage: error.localizedDescription)
 
         postNfcScanningFinishedNotification(withAction: nil)
     }
-
     
-    /// Posts the `nfcSessionFinished` notification to notify views that the `nfcSession` has concluded.
+    /// Posts the `nfcSessionFinished` notification with a given `NfcAction` to notify views that the `nfcSession` has concluded.
+    /// - Parameter action: The action to post in the `nfcSessionFinished` notification's `userInfo`.
     func postNfcScanningFinishedNotification(withAction action: NfcAction?) {
         if let action {
             NotificationCenter.default.post(
@@ -243,10 +303,8 @@ final class NfcService: NSObject, NFCNDEFReaderSessionDelegate {
 
     // TODO: Do something here
     func readerSession(_ session: NFCNDEFReaderSession, didInvalidateWithError error: Error) {
-        print("ERROR WHEN INVALIDATING: \(error)")
+        print(error)
     }
 
     func readerSession(_ session: NFCNDEFReaderSession, didDetectNDEFs messages: [NFCNDEFMessage]) { }
-
-    func readerSessionDidBecomeActive(_ session: NFCNDEFReaderSession) { }
 }

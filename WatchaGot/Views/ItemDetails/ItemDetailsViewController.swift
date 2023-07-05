@@ -30,7 +30,7 @@ class ItemDetailsViewController: UIViewController, MainViewController {
         itemNameLabel.text = viewModel.item.name
 
         shipButton.setTitle("Ship", for: .normal)
-        #warning("This button shouldn't show this alert if the item has no tag")
+        // TODO: This button shouldn't show this alert if the item has no tag
         shipButton.addTarget(self, action: #selector(shipButtonTapped), for: .touchUpInside)
     }
 
