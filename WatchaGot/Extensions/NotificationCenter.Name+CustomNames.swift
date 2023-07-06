@@ -9,4 +9,5 @@ import Foundation
 
 extension Notification.Name {
     static let nfcSessionFinished = Notification.Name("nfcSessionFinished")
+    static let itemUpdated = Notification.Name("itemUpdated")
 }

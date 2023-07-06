@@ -28,7 +28,12 @@ final class AddEditItemViewModel: MainViewModel {
     }
 
     init(itemToEdit: Item? = nil) {
-        self.itemToEdit = itemToEdit
+        if let itemToEdit {
+            self.itemToEdit = itemToEdit
+            self.itemName = itemToEdit.name
+            self.itemPrice = itemToEdit.price
+            self.itemNotes = itemToEdit.notes ?? ""
+        }
     }
     
     /// Starts the `NFCNDEFReaderSession` for writing to an NFC tag.
@@ -75,7 +80,7 @@ final class AddEditItemViewModel: MainViewModel {
     /// Uses the data entered by the user to update an existing item in the database.
     /// - Parameter itemToEdit: The item to be updated within the database.
     func updateItem(_ itemToEdit: Item) {
-        var updatedItem = Item(
+        let updatedItem = Item(
             id: itemToEdit.id,
             name: itemName,
             price: itemPrice,
@@ -84,14 +89,24 @@ final class AddEditItemViewModel: MainViewModel {
         )
 
         DatabaseService.shared.updateData(update: updatedItem, at: Constants.apiItemsUrl) { [weak self] updatedItem, error in
-            guard error == nil else {
+            guard error == nil,
+                  let updatedItem else {
                 self?.error = HttpError.badResponse
                 return
             }
 
             DispatchQueue.main.async {
+                self?.postItemUpdatedNotification(forItem: updatedItem)
                 self?.updatedItem = updatedItem
             }
         }
+    }
+
+    func postItemUpdatedNotification(forItem item: Item) {
+        NotificationCenter.default.post(
+            name: .itemUpdated,
+            object: nil,
+            userInfo: [Constants.updatedItem: item]
+        )
     }
 }

@@ -5,12 +5,13 @@
 //  Created by Julian Worden on 6/15/23.
 //
 
-import Foundation
+import Combine
 
 final class ItemDetailsViewModel: MainViewModel {
     @Published var error: Error?
 
-    let item: Item
+    var item: Item
+    var cancellables = Set<AnyCancellable>()
 
     init(item: Item) {
         self.item = item

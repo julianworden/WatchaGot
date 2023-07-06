@@ -86,14 +86,20 @@ class ItemDetailsViewController: UIViewController, MainViewController {
             }
             .store(in: &cancellables)
 
+        NotificationCenter.default.publisher(for: .itemUpdated)
+            .sink { [weak self] notification in
+                if let updatedItem = notification.userInfo?[Constants.updatedItem] as? Item {
+                    self?.viewModel.item = updatedItem
+                    self?.itemNameLabel.text = updatedItem.name
+                    self?.itemPriceLabel.text = updatedItem.formattedPrice
+                    self?.itemNotesLabel.text = updatedItem.notes
+                }
+            }
+            .store(in: &cancellables)
+
         NotificationCenter.default.publisher(for: .nfcSessionFinished)
             .sink { [weak self] notification in
-                guard let userInfo = notification.userInfo else {
-                    self?.dismissView()
-                    return
-                }
-
-                if let nfcAction = userInfo[Constants.nfcAction] as? NfcAction {
+                if let nfcAction = notification.userInfo?[Constants.nfcAction] as? NfcAction {
                     switch nfcAction {
                     case .delete(let item):
                         self?.viewModel.deleteItemFromDatabase(item) {

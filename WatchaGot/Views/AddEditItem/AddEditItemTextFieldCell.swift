@@ -24,16 +24,16 @@ final class AddEditItemTextFieldCell: UITableViewCell {
 
     func configure(_ textFieldType: AddEditItemTextFieldType, forItem itemToEdit: Item?) {
         self.textField.borderStyle = .roundedRect
-        self.textField.placeholder = textField.placeholder
-        self.textField.keyboardType = textField.keyboardType
-        self.textField.tag = textField.tag
-        
+        self.textField.placeholder = textFieldType.placeholder
+        self.textField.keyboardType = textFieldType.keyboardType
+        self.textField.tag = textFieldType.tag
+
         if let itemToEdit {
             switch textFieldType {
             case .name:
-                textField.text = itemToEdit.name
+                self.textField.text = itemToEdit.name
             case .price:
-                textField.text = String(itemToEdit.price)
+                self.textField.text = String(itemToEdit.price)
             default:
                 break
             }

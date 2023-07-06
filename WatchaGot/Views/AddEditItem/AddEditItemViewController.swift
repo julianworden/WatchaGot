@@ -72,10 +72,9 @@ class AddEditItemViewController: UIViewController, MainViewController {
             .store(in: &cancellables)
 
         viewModel.$updatedItem
-            .sink { [weak self] newItem in
-                guard let newItem else { return }
+            .sink { [weak self] updatedItem in
+                guard updatedItem != nil else { return }
 
-                self?.delegate?.addEditItemViewController(didUpdateItem: newItem)
                 self?.dismissView()
             }
             .store(in: &cancellables)
@@ -90,12 +89,7 @@ class AddEditItemViewController: UIViewController, MainViewController {
 
         NotificationCenter.default.publisher(for: .nfcSessionFinished)
             .sink { [weak self] notification in
-                guard let userInfo = notification.userInfo else {
-                    self?.dismissView()
-                    return
-                }
-
-                if let nfcAction = userInfo[Constants.nfcAction] as? NfcAction {
+                if let nfcAction = notification.userInfo?[Constants.nfcAction] as? NfcAction {
                     switch nfcAction {
                     case .write(let item):
                         self?.delegate?.addEditItemViewController(didUpdateItem: item)

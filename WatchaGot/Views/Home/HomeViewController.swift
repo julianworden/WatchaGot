@@ -143,6 +143,7 @@ extension HomeViewController: UITableViewDelegate, AddEditItemDiffableDataSource
     }
 }
 
+// Necessary because viewWillAppear doesn't get called after AddEditItemViewController's sheet dismissal
 extension HomeViewController: AddEditItemViewControllerDelegate {
     func addEditItemViewController(didCreateItem item: Item) {
         viewModel.addItemToItemsArray(item)
