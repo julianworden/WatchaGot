@@ -22,7 +22,7 @@ final class AddEditItemTextViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(_ textViewType: AddEditItemTextFieldType) {
+    func configure(_ textViewType: AddEditItemTextFieldType, withItem itemToEdit: Item?) {
         self.textView.layer.borderWidth = 0.75
         self.textView.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.35).cgColor
         self.textView.layer.cornerRadius = 6
@@ -30,6 +30,10 @@ final class AddEditItemTextViewCell: UITableViewCell {
 
         self.textView.keyboardType = textViewType.keyboardType
         self.textView.tag = textViewType.tag
+
+        if let itemToEdit {
+            textView.text = itemToEdit.notes
+        }
     }
 
     func constrain() {
@@ -46,6 +50,6 @@ final class AddEditItemTextViewCell: UITableViewCell {
 
 #Preview {
     let cell = AddEditItemTextViewCell()
-    cell.configure(.notes)
+    cell.configure(.notes, withItem: Item.example)
     return cell
 }

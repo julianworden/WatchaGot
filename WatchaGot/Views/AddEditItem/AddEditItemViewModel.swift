@@ -9,7 +9,9 @@ import CoreNFC
 import UIKit
 
 final class AddEditItemViewModel: MainViewModel {
-    /// The `Item` that is updated or created by `saveButtonTapped()`.
+    /// The item that is created by `saveButtonTapped()`.
+    @Published var newItem: Item?
+    /// The item that is created by `saveButtonTapped()`.
     @Published var updatedItem: Item?
     @Published var error: Error?
 
@@ -33,33 +35,62 @@ final class AddEditItemViewModel: MainViewModel {
     func beginNfcScanning() {
         do {
             if itemToEdit == nil,
-               let updatedItem {
-                try NfcService.shared.startScanning(withAction: .write(item: updatedItem))
+               let newItem {
+                try NfcService.shared.startScanning(withAction: .write(item: newItem))
             }
         } catch {
             self.error = error
         }
     }
-    
-    /// Saves the new or updated item to the database. If this operation completes successfully, it will use the `updatedItem`
-    /// property to prompt the user to either update an existing NFC tag or to add the item's data to a new NFC tag.
-    func saveButtonTapped() {
-        if itemToEdit == nil {
-            let newItem = Item(
-                name: itemName,
-                price: itemPrice,
-                notes: itemNotes.isReallyEmpty ? nil : itemNotes
-            )
-            
-            DatabaseService.shared.saveData(save: newItem, at: Constants.apiItemsUrl) { [weak self] item, error in
-                guard error == nil else {
-                    self?.error = HttpError.badResponse
-                    return
-                }
 
-                DispatchQueue.main.async {
-                    self?.updatedItem = item
-                }
+    /// Determines whether or not the save button should update an existing item or create a new one.
+    func saveButtonTapped() {
+        if let itemToEdit {
+            updateItem(itemToEdit)
+        } else {
+            createNewItem()
+        }
+    }
+    
+    /// Uses the data entered by the user to create a new item and save it to the database.
+    func createNewItem() {
+        let newItem = Item(
+            name: itemName,
+            price: itemPrice,
+            notes: itemNotes.isReallyEmpty ? nil : itemNotes
+        )
+
+        DatabaseService.shared.saveData(save: newItem, at: Constants.apiItemsUrl) { [weak self] newItem, error in
+            guard error == nil else {
+                self?.error = HttpError.badResponse
+                return
+            }
+
+            DispatchQueue.main.async {
+                self?.newItem = newItem
+            }
+        }
+    }
+    
+    /// Uses the data entered by the user to update an existing item in the database.
+    /// - Parameter itemToEdit: The item to be updated within the database.
+    func updateItem(_ itemToEdit: Item) {
+        var updatedItem = Item(
+            id: itemToEdit.id,
+            name: itemName,
+            price: itemPrice,
+            hasTag: itemToEdit.hasTag,
+            notes: itemNotes
+        )
+
+        DatabaseService.shared.updateData(update: updatedItem, at: Constants.apiItemsUrl) { [weak self] updatedItem, error in
+            guard error == nil else {
+                self?.error = HttpError.badResponse
+                return
+            }
+
+            DispatchQueue.main.async {
+                self?.updatedItem = updatedItem
             }
         }
     }

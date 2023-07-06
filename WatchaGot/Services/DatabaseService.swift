@@ -73,15 +73,15 @@ final class DatabaseService {
             urlRequest.httpBody = jsonData
             urlRequest.addValue(MimeType.json.rawValue, forHTTPHeaderField: HttpHeader.contentType.rawValue)
 
-            URLSession.shared.dataTask(with: urlRequest) { [weak self] data, response, error in
+            URLSession.shared.dataTask(with: urlRequest) { [weak self] updatedData, response, error in
                 self?.handleErrorAndReponse(error: error, response: response, completion: { thrownError in
                     guard thrownError == nil else {
                         completion(nil, thrownError)
                         return
                     }
 
-                    if let data,
-                       let decodedData = try? JSONDecoder().decode(T.self, from: data) {
+                    if let updatedData,
+                       let decodedData = try? JSONDecoder().decode(T.self, from: updatedData) {
                         completion(decodedData, nil)
                     } else {
                         completion(nil, HttpError.decodingFailed)

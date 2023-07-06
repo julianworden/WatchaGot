@@ -132,7 +132,12 @@ class ItemDetailsViewController: UIViewController, MainViewController {
     }
 
     @objc func editButtonTapped() {
-
+        let addEditItemViewController = AddEditItemViewController()
+        let addEditItemViewModel = AddEditItemViewModel(itemToEdit: viewModel.item)
+        addEditItemViewController.viewModel = addEditItemViewModel
+        
+        let addEditItemNavigationController = UINavigationController(rootViewController: addEditItemViewController)
+        present(addEditItemNavigationController, animated: true)
     }
 
     func shipAlertConfirmed(_ action: UIAlertAction) {

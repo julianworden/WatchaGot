@@ -22,11 +22,22 @@ final class AddEditItemTextFieldCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
 
-    func configure(_ textField: AddEditItemTextFieldType) {
+    func configure(_ textFieldType: AddEditItemTextFieldType, forItem itemToEdit: Item?) {
         self.textField.borderStyle = .roundedRect
         self.textField.placeholder = textField.placeholder
         self.textField.keyboardType = textField.keyboardType
         self.textField.tag = textField.tag
+        
+        if let itemToEdit {
+            switch textFieldType {
+            case .name:
+                textField.text = itemToEdit.name
+            case .price:
+                textField.text = String(itemToEdit.price)
+            default:
+                break
+            }
+        }
     }
 
     func constrain() {
@@ -43,6 +54,6 @@ final class AddEditItemTextFieldCell: UITableViewCell {
 
 #Preview {
     let cell = AddEditItemTextFieldCell()
-    cell.configure(.name)
+    cell.configure(.name, forItem: Item.example)
     return cell
 }

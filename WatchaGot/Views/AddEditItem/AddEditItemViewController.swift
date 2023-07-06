@@ -62,12 +62,21 @@ class AddEditItemViewController: UIViewController, MainViewController {
 
     func subscribeToPublishers() {
         // New value published when user successfully creates new item
-        viewModel.$updatedItem
-            .sink { [weak self] updatedItem in
-                guard let updatedItem else { return }
+        viewModel.$newItem
+            .sink { [weak self] newItem in
+                guard let newItem else { return }
 
-                self?.delegate?.addEditItemViewController(didCreateItem: updatedItem)
+                self?.delegate?.addEditItemViewController(didCreateItem: newItem)
                 self?.presentScanningAlert()
+            }
+            .store(in: &cancellables)
+
+        viewModel.$updatedItem
+            .sink { [weak self] newItem in
+                guard let newItem else { return }
+
+                self?.delegate?.addEditItemViewController(didUpdateItem: newItem)
+                self?.dismissView()
             }
             .store(in: &cancellables)
 
@@ -160,7 +169,7 @@ extension AddEditItemViewController: UITableViewDelegate, UITableViewDataSource 
             
             let textFieldType = AddEditItemTextFieldType.getType(withTag: index)
             cell.textField.delegate = self
-            cell.configure(textFieldType)
+            cell.configure(textFieldType, forItem: viewModel.itemToEdit)
             return cell
         } else if index == 2 {
             let cell = tableView.dequeueReusableCell(
@@ -170,7 +179,7 @@ extension AddEditItemViewController: UITableViewDelegate, UITableViewDataSource 
 
             let textFieldType = AddEditItemTextFieldType.getType(withTag: index)
             cell.textView.delegate = self
-            cell.configure(textFieldType)
+            cell.configure(textFieldType, withItem: viewModel.itemToEdit)
             return cell
         } else {
             return UITableViewCell()
