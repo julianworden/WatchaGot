@@ -224,7 +224,8 @@ extension AddEditItemViewController: UITextViewDelegate {
 
     // Clear placeholder if it exists.
     func textViewDidBeginEditing(_ textView: UITextView) {
-        if viewModel.itemToEdit?.notes == nil {
+        if viewModel.itemToEdit?.notes == nil &&
+            viewModel.itemNotes.isReallyEmpty {
             textView.text.removeAll()
             textView.textColor = .label
             textView.font = .preferredFont(forTextStyle: .body)
