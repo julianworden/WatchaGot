@@ -44,10 +44,10 @@ final class AddEditItemTextFieldCell: UITableViewCell {
         contentView.addConstrainedSubview(textField)
 
         NSLayoutConstraint.activate([
-            textField.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            textField.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+            textField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
             textField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
             textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            textField.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
 }

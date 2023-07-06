@@ -26,13 +26,17 @@ final class AddEditItemTextViewCell: UITableViewCell {
         self.textView.layer.borderWidth = 0.75
         self.textView.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.35).cgColor
         self.textView.layer.cornerRadius = 6
-        self.textView.font = .systemFont(ofSize: 16)
-
         self.textView.keyboardType = textViewType.keyboardType
         self.textView.tag = textViewType.tag
 
         if let itemToEdit {
-            textView.text = itemToEdit.notes
+            self.textView.textColor = .label
+            self.textView.font = .preferredFont(forTextStyle: .body)
+            self.textView.text = itemToEdit.notes
+        } else {
+            self.textView.textColor = .secondaryLabel.withAlphaComponent(0.3)
+            self.textView.font = .preferredFont(forTextStyle: .body)
+            self.textView.text = "Notes"
         }
     }
 
@@ -40,16 +44,22 @@ final class AddEditItemTextViewCell: UITableViewCell {
         contentView.addConstrainedSubview(textView)
 
         NSLayoutConstraint.activate([
-            textView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            textView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+            textView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
             textView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),
-            textView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10),
-            textView.heightAnchor.constraint(equalToConstant: 85)
+            textView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -10)
         ])
     }
 }
 
-#Preview {
+#Preview("With Example Item") {
     let cell = AddEditItemTextViewCell()
     cell.configure(.notes, withItem: Item.example)
+    return cell
+}
+
+#Preview("Without Example Item") {
+    let cell = AddEditItemTextViewCell()
+    cell.configure(.notes, withItem: nil)
     return cell
 }

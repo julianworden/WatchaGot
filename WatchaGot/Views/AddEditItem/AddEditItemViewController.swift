@@ -221,6 +221,15 @@ extension AddEditItemViewController: UITextViewDelegate {
             break
         }
     }
+
+    // Clear placeholder if it exists.
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if viewModel.itemToEdit?.notes == nil {
+            textView.text.removeAll()
+            textView.textColor = .label
+            textView.font = .preferredFont(forTextStyle: .body)
+        }
+    }
 }
 
 #Preview("Create Item") {
