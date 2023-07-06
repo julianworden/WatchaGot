@@ -29,10 +29,10 @@ final class AddEditItemTextViewCell: UITableViewCell {
         self.textView.keyboardType = textViewType.keyboardType
         self.textView.tag = textViewType.tag
 
-        if let itemToEdit {
+        if itemToEdit?.notes != nil {
             self.textView.textColor = .label
             self.textView.font = .preferredFont(forTextStyle: .body)
-            self.textView.text = itemToEdit.notes
+            self.textView.text = itemToEdit?.notes
         } else {
             self.textView.textColor = .secondaryLabel.withAlphaComponent(0.3)
             self.textView.font = .preferredFont(forTextStyle: .body)

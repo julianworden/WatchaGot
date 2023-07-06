@@ -42,6 +42,7 @@
 		ABC804EA2A39F46A006527A7 /* AddEditItemDiffableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC804E92A39F46A006527A7 /* AddEditItemDiffableDataSource.swift */; };
 		ABC804EC2A39F4CF006527A7 /* HomeTableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC804EB2A39F4CF006527A7 /* HomeTableViewSection.swift */; };
 		ABDD33382A55AC6400A5A646 /* UIFont+boldLargeTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDD33372A55AC6400A5A646 /* UIFont+boldLargeTitle.swift */; };
+		ABF3FC8F2A5705AF00C4537F /* FormError.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF3FC8E2A5705AF00C4537F /* FormError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -82,6 +83,7 @@
 		ABC804E92A39F46A006527A7 /* AddEditItemDiffableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditItemDiffableDataSource.swift; sourceTree = "<group>"; };
 		ABC804EB2A39F4CF006527A7 /* HomeTableViewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewSection.swift; sourceTree = "<group>"; };
 		ABDD33372A55AC6400A5A646 /* UIFont+boldLargeTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+boldLargeTitle.swift"; sourceTree = "<group>"; };
+		ABF3FC8E2A5705AF00C4537F /* FormError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +133,7 @@
 			children = (
 				AB1DEDE02A3404330013CEC8 /* HttpError.swift */,
 				AB0D7E0E2A3E6DC000B8F34D /* NfcError.swift */,
+				ABF3FC8E2A5705AF00C4537F /* FormError.swift */,
 			);
 			path = Errors;
 			sourceTree = "<group>";
@@ -342,6 +345,7 @@
 				AB71DA4D2A321C0F00398075 /* AddEditItemTextFieldType.swift in Sources */,
 				ABB221D32A2FE2C500C4C1EB /* SceneDelegate.swift in Sources */,
 				AB1DEDD92A3402300013CEC8 /* ApiEndpoint.swift in Sources */,
+				ABF3FC8F2A5705AF00C4537F /* FormError.swift in Sources */,
 				AB3773202A3A06FC000CBFC8 /* UIAlertController+GenericError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

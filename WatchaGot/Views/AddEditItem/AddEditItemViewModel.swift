@@ -50,6 +50,11 @@ final class AddEditItemViewModel: MainViewModel {
 
     /// Determines whether or not the save button should update an existing item or create a new one.
     func saveButtonTapped() {
+        guard !itemName.isReallyEmpty else {
+            error = FormError.incompleteAddEditItemViewControllerForm
+            return
+        }
+
         if let itemToEdit {
             updateItem(itemToEdit)
         } else {
