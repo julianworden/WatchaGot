@@ -66,6 +66,7 @@ class ItemDetailsViewController: UIViewController, MainViewController {
 
         buttonStackView.axis = .vertical
         buttonStackView.spacing = 6
+        buttonStackView.distribution = .fillEqually
 
         shipButton.setTitle("Ship", for: .normal)
         shipButton.setImage(UIImage(systemName: "box.truck"), for: .normal)
@@ -92,6 +93,7 @@ class ItemDetailsViewController: UIViewController, MainViewController {
 
             buttonStackView.topAnchor.constraint(equalTo: textStackView.bottomAnchor, constant: 10),
             buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
         ])
     }
 
@@ -142,17 +144,11 @@ class ItemDetailsViewController: UIViewController, MainViewController {
     }
 
     @objc func shipButtonTapped() {
-        let alert = UIAlertController(
-            title: "NFC Tag Detected",
-            message: "It looks like this item's data has been saved to an NFC tag. Before shipping this item, you'll need to remove the data from that tag.",
-            preferredStyle: .alert
-        )
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        let startScanningAction = UIAlertAction(title: "Start Scanning", style: .default, handler: shipAlertConfirmed)
-        alert.addAction(cancelAction)
-        alert.addAction(startScanningAction)
-
-        present(alert, animated: true)
+        if viewModel.item.hasTag {
+            presentTagDetectedAlert()
+        } else {
+            presentShipConfirmationAlert()
+        }
     }
 
     @objc func editButtonTapped() {
@@ -164,8 +160,42 @@ class ItemDetailsViewController: UIViewController, MainViewController {
         present(addEditItemNavigationController, animated: true)
     }
 
-    func shipAlertConfirmed(_ action: UIAlertAction) {
+    func presentTagDetectedAlert() {
+        let alert = UIAlertController(
+            title: "NFC Tag Detected",
+            message: "It looks like this item's data has been saved to an NFC tag. Before shipping this item, you'll need to remove the data from that tag.",
+            preferredStyle: .alert
+        )
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        let startScanningAction = UIAlertAction(title: "Start Scanning", style: .default, handler: startScanningForNfcTagConfirmed)
+        alert.addAction(cancelAction)
+        alert.addAction(startScanningAction)
+
+        present(alert, animated: true)
+    }
+
+    func presentShipConfirmationAlert() {
+        let alert = UIAlertController(
+            title: "Are You Sure?",
+            message: "Shipping this item will delete it from the database. This is not reversable.",
+            preferredStyle: .alert
+        )
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        let yesAction = UIAlertAction(title: "Yes", style: .destructive, handler: shipItemConfirmed)
+        alert.addAction(cancelAction)
+        alert.addAction(yesAction)
+
+        present(alert, animated: true)
+    }
+
+    func startScanningForNfcTagConfirmed(_ action: UIAlertAction) {
         viewModel.beginNfcScanning()
+    }
+
+    func shipItemConfirmed(_ action: UIAlertAction) {
+        viewModel.deleteItemFromDatabase(viewModel.item) { [weak self] in
+            self?.dismissView()
+        }
     }
 }
 
