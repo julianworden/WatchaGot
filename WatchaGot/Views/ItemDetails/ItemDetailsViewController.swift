@@ -15,7 +15,14 @@ class ItemDetailsViewController: UIViewController, MainViewController {
     lazy private var itemNameLabel = UILabel()
     lazy private var itemPriceLabel = UILabel()
     lazy private var itemNotesLabel = UILabel()
-    lazy private var shipButton = UIButton(configuration: .borderedProminent())
+
+    lazy private var buttonStackView = UIStackView(
+        arrangedSubviews: [shipButton, addTagButton, deleteItemButton]
+    )
+    lazy private var shipButton = UIButton(configuration: .borderedProminentWithPaddedImage())
+    lazy private var addTagButton = UIButton(configuration: .borderedProminentWithPaddedImage())
+    lazy private var deleteItemButton = UIButton(configuration: .borderedProminentWithPaddedImage())
+
     lazy private var editButton = UIBarButtonItem(
         title: "Edit",
         style: .plain,
@@ -57,23 +64,34 @@ class ItemDetailsViewController: UIViewController, MainViewController {
         itemNotesLabel.numberOfLines = 0
         itemNotesLabel.adjustsFontForContentSizeCategory = true
 
+        buttonStackView.axis = .vertical
+        buttonStackView.spacing = 6
+
         shipButton.setTitle("Ship", for: .normal)
+        shipButton.setImage(UIImage(systemName: "box.truck"), for: .normal)
         // TODO: This button shouldn't show this alert if the item has no tag
         shipButton.addTarget(self, action: #selector(shipButtonTapped), for: .touchUpInside)
+
+        addTagButton.setTitle("Add Tag", for: .normal)
+        addTagButton.setImage(UIImage(systemName: "tag"), for: .normal)
+        addTagButton.isHidden = viewModel.item.hasTag ? true : false
+
+        deleteItemButton.setTitle("Delete Item", for: .normal)
+        deleteItemButton.setImage(UIImage(systemName: "trash"), for: .normal)
+        deleteItemButton.role = .destructive
+        deleteItemButton.tintColor = .systemRed
     }
 
     func constrain() {
-        view.addConstrainedSubviews(textStackView, shipButton)
-
-        itemNotesLabel.translatesAutoresizingMaskIntoConstraints = false
+        view.addConstrainedSubviews(textStackView, buttonStackView)
 
         NSLayoutConstraint.activate([
             textStackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             textStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             textStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
 
-            shipButton.topAnchor.constraint(equalTo: textStackView.bottomAnchor, constant: 10),
-            shipButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            buttonStackView.topAnchor.constraint(equalTo: textStackView.bottomAnchor, constant: 10),
+            buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
         ])
     }
 
@@ -151,9 +169,19 @@ class ItemDetailsViewController: UIViewController, MainViewController {
     }
 }
 
-#Preview {
+#Preview("Item Has Tag") {
     let itemDetailsViewController = ItemDetailsViewController()
     let itemDetailsViewModel = ItemDetailsViewModel(item: Item.example)
     itemDetailsViewController.viewModel = itemDetailsViewModel
     return UINavigationController(rootViewController: itemDetailsViewController)
 }
+
+#Preview("Item Has No Tag") {
+    let itemDetailsViewController = ItemDetailsViewController()
+    var itemExampleCopy = Item.example
+    itemExampleCopy.hasTag = false
+    let itemDetailsViewModel = ItemDetailsViewModel(item: itemExampleCopy)
+    itemDetailsViewController.viewModel = itemDetailsViewModel
+    return UINavigationController(rootViewController: itemDetailsViewController)
+}
+
