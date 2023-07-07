@@ -7,7 +7,6 @@
 
 import Foundation
 
-// TODO: Add isSyncedWithTag property to make sure db and tags are always synced up
 struct Item: Codable, Hashable {
     let id: UUID?
     let name: String

@@ -105,7 +105,11 @@ final class NfcService: NSObject, NFCNDEFReaderSessionDelegate {
             }
         }
     }
-
+    
+    /// Replaces a given tag's data with up-to-date data.
+    /// - Parameters:
+    ///   - itemToEdit: The up-to-date item data that is to be added to the `tag`.
+    ///   - tag: The tag that is to be overwritten by `itemToEdit`'s data.
     func update(_ itemToEdit: Item, on tag: NFCNDEFTag) {
         checkIfTagIsEmpty(tag) { [weak self] tagIsEmpty, itemOnTag, error in
             guard error == nil else {
@@ -303,7 +307,13 @@ final class NfcService: NSObject, NFCNDEFReaderSessionDelegate {
             }
         }
     }
-
+    
+    /// Called after performing operations successfully to notify the user that the session has been completed successfully. This method also posts an `.nfcSessionFinished` notifcation
+    /// so that views can update accordingly.
+    /// - Parameters:
+    ///   - session: The session that is to be invalidated.
+    ///   - alertMessage: The alert message to show the user, which should give more context regarding why the session ended.
+    ///   - action: The action that the invalidated session performed. Used for the `.nfcSessionFinished` notification that this method posts.
     func invalidateSuccessfulSession(invalidate session: NFCNDEFReaderSession?, withAlertMessage alertMessage: String, and action: NfcAction) {
         session?.invalidate()
         session?.alertMessage = alertMessage
@@ -338,9 +348,14 @@ final class NfcService: NSObject, NFCNDEFReaderSessionDelegate {
         }
     }
 
-    // TODO: Do something here
     func readerSession(_ session: NFCNDEFReaderSession, didInvalidateWithError error: Error) {
-        print(error)
+        if let nfcError = error as? NFCReaderError,
+           // Don't show error when user cancels session.
+           nfcError.code != .readerSessionInvalidationErrorUserCanceled {
+            handleError(.unknown(error: nfcError))
+        } else {
+            handleError(.unknown(error: error))
+        }
     }
 
     func readerSession(_ session: NFCNDEFReaderSession, didDetectNDEFs messages: [NFCNDEFMessage]) { }

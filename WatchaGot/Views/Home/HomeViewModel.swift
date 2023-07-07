@@ -45,7 +45,6 @@ final class HomeViewModel: MainViewModel {
         }
     }
 
-
     func addItemToItemsArray(_ item: Item) {
         DispatchQueue.main.async { [weak self] in
             self?.items.append(item)

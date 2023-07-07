@@ -97,9 +97,9 @@ class HomeViewController: UIViewController, MainViewController {
     }
 }
 
-extension HomeViewController: UITableViewDelegate, AddEditItemDiffableDataSourceDelegate {
+extension HomeViewController: UITableViewDelegate {
     private func createDiffableDataSource() {
-        let dataSource = AddEditItemDiffableDataSource(tableView: itemsTableView) { tableView, indexPath, item in
+        dataSource = UITableViewDiffableDataSource<HomeTableViewSection, Item>(tableView: itemsTableView) { tableView, indexPath, item in
             guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.homeTableViewCellReuseIdentifier) else {
                 return UITableViewCell()
             }
@@ -116,9 +116,6 @@ extension HomeViewController: UITableViewDelegate, AddEditItemDiffableDataSource
             }
             return cell
         }
-
-        dataSource.delegate = self
-        self.dataSource = dataSource
     }
 
     private func updateDiffableDataSource(with items: [Item]) {
@@ -136,10 +133,6 @@ extension HomeViewController: UITableViewDelegate, AddEditItemDiffableDataSource
         itemDetailsViewController.viewModel = ItemDetailsViewModel(item: selectedItem)
 
         navigationController?.pushViewController(itemDetailsViewController, animated: true)
-    }
-
-    func addEditItemDiffableDataSource(didDeleteItemAt indexPath: IndexPath) {
-        viewModel.deleteItem(at: indexPath)
     }
 }
 

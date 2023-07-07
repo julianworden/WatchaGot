@@ -39,7 +39,6 @@
 		ABB221DA2A2FE2C500C4C1EB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = ABB221D92A2FE2C500C4C1EB /* Assets.xcassets */; };
 		ABB221DD2A2FE2C500C4C1EB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = ABB221DB2A2FE2C500C4C1EB /* LaunchScreen.storyboard */; };
 		ABB8BE592A3FDE2C0028A921 /* NfcAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABB8BE582A3FDE2C0028A921 /* NfcAction.swift */; };
-		ABC804EA2A39F46A006527A7 /* AddEditItemDiffableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC804E92A39F46A006527A7 /* AddEditItemDiffableDataSource.swift */; };
 		ABC804EC2A39F4CF006527A7 /* HomeTableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC804EB2A39F4CF006527A7 /* HomeTableViewSection.swift */; };
 		ABDD33382A55AC6400A5A646 /* UIFont+boldLargeTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDD33372A55AC6400A5A646 /* UIFont+boldLargeTitle.swift */; };
 		ABEED8582A57AA7F007A3051 /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABEED8572A57AA7F007A3051 /* CustomError.swift */; };
@@ -81,7 +80,6 @@
 		ABB221DC2A2FE2C500C4C1EB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		ABB221DE2A2FE2C500C4C1EB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		ABB8BE582A3FDE2C0028A921 /* NfcAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NfcAction.swift; sourceTree = "<group>"; };
-		ABC804E92A39F46A006527A7 /* AddEditItemDiffableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditItemDiffableDataSource.swift; sourceTree = "<group>"; };
 		ABC804EB2A39F4CF006527A7 /* HomeTableViewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewSection.swift; sourceTree = "<group>"; };
 		ABDD33372A55AC6400A5A646 /* UIFont+boldLargeTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+boldLargeTitle.swift"; sourceTree = "<group>"; };
 		ABEED8572A57AA7F007A3051 /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
@@ -178,7 +176,6 @@
 				AB6133D72A3818C10004BAA3 /* HomeViewModel.swift */,
 				AB6133D92A3819C20004BAA3 /* HomeTableViewCell.swift */,
 				ABA9822C2A38AC8300670A5F /* AddEditItemViewControllerDelegate.swift */,
-				ABC804E92A39F46A006527A7 /* AddEditItemDiffableDataSource.swift */,
 				ABC804EB2A39F4CF006527A7 /* HomeTableViewSection.swift */,
 			);
 			path = Home;
@@ -327,7 +324,6 @@
 				AB1DEDDB2A3403490013CEC8 /* MimeType.swift in Sources */,
 				AB1DEDDA2A3403490013CEC8 /* HttpHeaders.swift in Sources */,
 				AB014EAA2A3B41D30049AB59 /* MainViewModel.swift in Sources */,
-				ABC804EA2A39F46A006527A7 /* AddEditItemDiffableDataSource.swift in Sources */,
 				AB1DEDD72A3400CC0013CEC8 /* Constants.swift in Sources */,
 				ABB221D52A2FE2C500C4C1EB /* HomeViewController.swift in Sources */,
 				AB37731E2A3A06A8000CBFC8 /* MainViewController.swift in Sources */,

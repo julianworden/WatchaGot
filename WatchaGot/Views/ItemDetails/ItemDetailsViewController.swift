@@ -69,7 +69,6 @@ class ItemDetailsViewController: UIViewController, MainViewController {
 
         shipButton.setTitle("Ship", for: .normal)
         shipButton.setImage(UIImage(systemName: "box.truck"), for: .normal)
-        // TODO: This button shouldn't show this alert if the item has no tag
         shipButton.addTarget(self, action: #selector(shipButtonTapped), for: .touchUpInside)
 
         addTagButton.setTitle("Add Tag", for: .normal)
