@@ -17,11 +17,10 @@ class ItemDetailsViewController: UIViewController, MainViewController {
     lazy private var itemNotesLabel = UILabel()
 
     lazy private var buttonStackView = UIStackView(
-        arrangedSubviews: [shipButton, addTagButton, deleteItemButton]
+        arrangedSubviews: [shipButton, addTagButton]
     )
     lazy private var shipButton = UIButton(configuration: .borderedProminentWithPaddedImage())
     lazy private var addTagButton = UIButton(configuration: .borderedProminentWithPaddedImage())
-    lazy private var deleteItemButton = UIButton(configuration: .borderedProminentWithPaddedImage())
 
     lazy private var editButton = UIBarButtonItem(
         title: "Edit",
@@ -76,11 +75,7 @@ class ItemDetailsViewController: UIViewController, MainViewController {
         addTagButton.setTitle("Add Tag", for: .normal)
         addTagButton.setImage(UIImage(systemName: "tag"), for: .normal)
         addTagButton.isHidden = viewModel.item.hasTag ? true : false
-
-        deleteItemButton.setTitle("Delete Item", for: .normal)
-        deleteItemButton.setImage(UIImage(systemName: "trash"), for: .normal)
-        deleteItemButton.role = .destructive
-        deleteItemButton.tintColor = .systemRed
+        addTagButton.addTarget(self, action: #selector(addTagButtonTapped), for: .touchUpInside)
     }
 
     func constrain() {
@@ -125,8 +120,8 @@ class ItemDetailsViewController: UIViewController, MainViewController {
                         self?.viewModel.deleteItemFromDatabase(item) {
                             self?.dismissView()
                         }
-                    default:
-                        break
+                    case .write(_):
+                        self?.dismissView()
                     }
                 }
             }
@@ -151,6 +146,10 @@ class ItemDetailsViewController: UIViewController, MainViewController {
         }
     }
 
+    @objc func addTagButtonTapped() {
+        viewModel.beginNfcScanningForAddingTagToItem()
+    }
+
     @objc func editButtonTapped() {
         let addEditItemViewController = AddEditItemViewController()
         let addEditItemViewModel = AddEditItemViewModel(itemToEdit: viewModel.item)
@@ -167,7 +166,7 @@ class ItemDetailsViewController: UIViewController, MainViewController {
             preferredStyle: .alert
         )
         let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        let startScanningAction = UIAlertAction(title: "Start Scanning", style: .default, handler: startScanningForNfcTagConfirmed)
+        let startScanningAction = UIAlertAction(title: "Start Scanning", style: .default, handler: startScanningForExistingNfcTagConfirmed)
         alert.addAction(cancelAction)
         alert.addAction(startScanningAction)
 
@@ -187,11 +186,15 @@ class ItemDetailsViewController: UIViewController, MainViewController {
 
         present(alert, animated: true)
     }
-
-    func startScanningForNfcTagConfirmed(_ action: UIAlertAction) {
-        viewModel.beginNfcScanning()
+    
+    /// Used for beginning an `NFCNDEFSession` to scan for `viewModel.item`'s tag.
+    /// - Parameter action: Satisfies UIAlertAction initializer requirement.
+    func startScanningForExistingNfcTagConfirmed(_ action: UIAlertAction) {
+        viewModel.beginNfcScanningForShipment()
     }
-
+    
+    /// Used for deleting an item from the database that does not have an NFC tag.
+    /// - Parameter action: Satisfies UIAlertAction initializer requirement.
     func shipItemConfirmed(_ action: UIAlertAction) {
         viewModel.deleteItemFromDatabase(viewModel.item) { [weak self] in
             self?.dismissView()

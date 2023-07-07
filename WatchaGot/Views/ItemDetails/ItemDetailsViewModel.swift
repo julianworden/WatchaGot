@@ -17,9 +17,17 @@ final class ItemDetailsViewModel: MainViewModel {
         self.item = item
     }
 
-    func beginNfcScanning() {
+    func beginNfcScanningForShipment() {
         do {
             try NfcService.shared.startScanning(withAction: .delete(item: item))
+        } catch {
+            self.error = error
+        }
+    }
+
+    func beginNfcScanningForAddingTagToItem() {
+        do {
+            try NfcService.shared.startScanning(withAction: .write(item: item))
         } catch {
             self.error = error
         }
