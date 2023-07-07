@@ -122,6 +122,8 @@ class ItemDetailsViewController: UIViewController, MainViewController {
                         }
                     case .write(_):
                         self?.dismissView()
+                    default:
+                        break
                     }
                 }
             }

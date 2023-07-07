@@ -22,7 +22,7 @@ final class NfcService: NSObject, NFCNDEFReaderSessionDelegate {
         switch action {
         case .write(_):
             return "Hold your phone near an empty NFC tag"
-        case .delete(let item):
+        case .delete(let item), .update(let item):
             return "Hold your phone next to the NFC tag storing data for \(item.name)."
         default:
             return ""
@@ -105,20 +105,54 @@ final class NfcService: NSObject, NFCNDEFReaderSessionDelegate {
             }
         }
     }
-    
+
+    func update(_ itemToEdit: Item, on tag: NFCNDEFTag) {
+        checkIfTagIsEmpty(tag) { [weak self] tagIsEmpty, itemOnTag, error in
+            guard error == nil else {
+                self?.handleError(.unknown(error: error!))
+                return
+            }
+
+            guard let tagIsEmpty,
+                  tagIsEmpty == false,
+                  let itemOnTag else {
+                self?.handleError(.tagIsEmpty)
+                return
+            }
+
+            guard itemOnTag.id == itemToEdit.id else {
+                self?.handleError(.readingUnexpectedItemFromTag(expectedItem: itemToEdit, foundItem: itemOnTag))
+                return
+            }
+
+            self?.writeNdefMessageToTag(write: itemToEdit, to: tag) { error in
+                guard error == nil else {
+                    self?.handleError(error!)
+                    return
+                }
+                
+                self?.invalidateSuccessfulSession(
+                    invalidate: self?.nfcSession,
+                    withAlertMessage: "Item Data Updated Successfully",
+                    and: .update(item: itemToEdit)
+                )
+            }
+        }
+    }
+
     /// Deletes a given `Item`'s data from a given `NFCNDEFTag`. This method will only complete successfully if the `tag` is not empty.
     /// - Parameters:
     ///   - itemToDelete: The item to delete from the `tag`.
     ///   - tag: The tag that will have `itemToDelete`'s data deleted from it.
     func delete(_ itemToDelete: Item, from tag: NFCNDEFTag) {
-        checkIfTagIsEmpty(tag) { [weak self] isEmpty, itemOnTag, error in
+        checkIfTagIsEmpty(tag) { [weak self] tagIsEmpty, itemOnTag, error in
             guard error == nil else {
                 self?.handleError(.unknown(error: error!))
                 return
             }
             
-            guard let isEmpty,
-                  isEmpty == false,
+            guard let tagIsEmpty,
+                  tagIsEmpty == false,
                   let itemOnTag else {
                 self?.handleError(.tagIsEmpty)
                 return
@@ -170,6 +204,8 @@ final class NfcService: NSObject, NFCNDEFReaderSessionDelegate {
                     self?.write(item, to: tag)
                 case (.readWrite, .delete(let item)):
                     self?.delete(item, from: tag)
+                case (.readWrite, .update(let item)):
+                    self?.update(item, on: tag)
                 case (.readOnly, _):
                     completion(.tagIsReadOnly)
                 default:

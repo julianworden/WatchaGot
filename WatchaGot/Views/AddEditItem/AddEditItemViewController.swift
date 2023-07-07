@@ -73,9 +73,13 @@ class AddEditItemViewController: UIViewController, MainViewController {
 
         viewModel.$updatedItem
             .sink { [weak self] updatedItem in
-                guard updatedItem != nil else { return }
+                guard let updatedItem else { return }
 
-                self?.dismissView()
+                if updatedItem.hasTag {
+                    self?.presentEditedItemHasTagAlert()
+                } else {
+                    self?.dismissView()
+                }
             }
             .store(in: &cancellables)
 
@@ -114,22 +118,38 @@ class AddEditItemViewController: UIViewController, MainViewController {
             message: "Watcha Got can write item data to empty NFC tags. If you have an NFC tag, tap \"Yes\" to use it to receive and ship items faster.",
             preferredStyle: .alert
         )
-        let noAction = UIAlertAction(title: "No", style: .default, handler: noNfcTagButtonTapped)
-        let yesAction = UIAlertAction(title: "Yes", style: .default, handler: yesNfcTagButtonTapped)
+        let noAction = UIAlertAction(title: "No", style: .default, handler: userIsNotUsingNfcTagConfirmed)
+        let yesAction = UIAlertAction(title: "Yes", style: .default, handler: userIsUsingNfcTagConfirmed)
         alert.addAction(noAction)
         alert.addAction(yesAction)
 
         present(alert, animated: true)
     }
-    
+
+    func presentEditedItemHasTagAlert() {
+        let alert = UIAlertController(
+            title: "NFC Tag Detected",
+            message: "You just edited this item's data, which means its NFC tag's data is no longer up to date. Tap \"Update Data\" to start scanning for the item's NFC tag.",
+            preferredStyle: .alert
+        )
+        let startScanningAction = UIAlertAction(title: "Start Scanning", style: .default, handler: startScanningToUpdateItemNfcTagConfirmed)
+        alert.addAction(startScanningAction)
+
+        present(alert, animated: true)
+    }
+
     /// Called when a user expresses they do not have an NFC tag to use.
-    func noNfcTagButtonTapped(_ action: UIAlertAction) {
+    func userIsNotUsingNfcTagConfirmed(_ action: UIAlertAction) {
         dismissView()
     }
     
     /// Called when a user expresses they do have an NFC tag to use.
-    func yesNfcTagButtonTapped(_ action: UIAlertAction) {
-        viewModel.beginNfcScanning()
+    func userIsUsingNfcTagConfirmed(_ action: UIAlertAction) {
+        viewModel.beginNfcScanningForItemCreation()
+    }
+
+    func startScanningToUpdateItemNfcTagConfirmed(_ action: UIAlertAction) {
+        viewModel.beginNfcScanningForItemUpdate()
     }
 
     func dismissView() {

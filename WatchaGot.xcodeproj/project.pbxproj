@@ -42,6 +42,7 @@
 		ABC804EA2A39F46A006527A7 /* AddEditItemDiffableDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC804E92A39F46A006527A7 /* AddEditItemDiffableDataSource.swift */; };
 		ABC804EC2A39F4CF006527A7 /* HomeTableViewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABC804EB2A39F4CF006527A7 /* HomeTableViewSection.swift */; };
 		ABDD33382A55AC6400A5A646 /* UIFont+boldLargeTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABDD33372A55AC6400A5A646 /* UIFont+boldLargeTitle.swift */; };
+		ABEED8582A57AA7F007A3051 /* CustomError.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABEED8572A57AA7F007A3051 /* CustomError.swift */; };
 		ABF3FC8F2A5705AF00C4537F /* FormError.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABF3FC8E2A5705AF00C4537F /* FormError.swift */; };
 /* End PBXBuildFile section */
 
@@ -83,6 +84,7 @@
 		ABC804E92A39F46A006527A7 /* AddEditItemDiffableDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEditItemDiffableDataSource.swift; sourceTree = "<group>"; };
 		ABC804EB2A39F4CF006527A7 /* HomeTableViewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTableViewSection.swift; sourceTree = "<group>"; };
 		ABDD33372A55AC6400A5A646 /* UIFont+boldLargeTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+boldLargeTitle.swift"; sourceTree = "<group>"; };
+		ABEED8572A57AA7F007A3051 /* CustomError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomError.swift; sourceTree = "<group>"; };
 		ABF3FC8E2A5705AF00C4537F /* FormError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -131,6 +133,7 @@
 		AB1DEDDD2A3404200013CEC8 /* Errors */ = {
 			isa = PBXGroup;
 			children = (
+				ABEED8572A57AA7F007A3051 /* CustomError.swift */,
 				AB1DEDE02A3404330013CEC8 /* HttpError.swift */,
 				AB0D7E0E2A3E6DC000B8F34D /* NfcError.swift */,
 				ABF3FC8E2A5705AF00C4537F /* FormError.swift */,
@@ -333,6 +336,7 @@
 				ABB221D12A2FE2C500C4C1EB /* AppDelegate.swift in Sources */,
 				AB3B99952A31379C00F117AB /* AddEditItemViewModel.swift in Sources */,
 				AB0D7E0F2A3E6DC000B8F34D /* NfcError.swift in Sources */,
+				ABEED8582A57AA7F007A3051 /* CustomError.swift in Sources */,
 				AB1DEDDC2A3403490013CEC8 /* HttpMethod.swift in Sources */,
 				AB3B99992A3137F200F117AB /* Item.swift in Sources */,
 				ABA9822D2A38AC8300670A5F /* AddEditItemViewControllerDelegate.swift in Sources */,

@@ -37,12 +37,25 @@ final class AddEditItemViewModel: MainViewModel {
     }
     
     /// Starts the `NFCNDEFReaderSession` for writing to an NFC tag.
-    func beginNfcScanning() {
+    func beginNfcScanningForItemCreation() {
         do {
             if itemToEdit == nil,
                let newItem {
                 try NfcService.shared.startScanning(withAction: .write(item: newItem))
             }
+        } catch {
+            self.error = error
+        }
+    }
+
+    func beginNfcScanningForItemUpdate() {
+        do {
+            guard let itemToEdit else {
+                error = CustomError.unexpectedNilValue
+                return
+            }
+
+            try NfcService.shared.startScanning(withAction: .update(item: itemToEdit))
         } catch {
             self.error = error
         }
