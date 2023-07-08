@@ -28,6 +28,7 @@ final class AddEditItemTextViewCell: UITableViewCell {
         self.textView.layer.cornerRadius = 6
         self.textView.keyboardType = textViewType.keyboardType
         self.textView.tag = textViewType.tag
+        self.textView.adjustsFontForContentSizeCategory = true
 
         if itemToEdit?.notes != nil {
             self.textView.textColor = .label
@@ -44,6 +45,7 @@ final class AddEditItemTextViewCell: UITableViewCell {
         contentView.addConstrainedSubview(textView)
 
         NSLayoutConstraint.activate([
+            textView.heightAnchor.constraint(equalToConstant: 100),
             textView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             textView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
             textView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 10),

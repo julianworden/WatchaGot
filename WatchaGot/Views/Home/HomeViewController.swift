@@ -54,7 +54,6 @@ class HomeViewController: UIViewController, MainViewController {
             receiveButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             receiveButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             receiveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            receiveButton.heightAnchor.constraint(equalToConstant: 40),
 
             itemsTableView.topAnchor.constraint(equalTo: receiveButton.bottomAnchor, constant: 10),
             itemsTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
@@ -109,9 +108,11 @@ extension HomeViewController: UITableViewDelegate {
             contentConfiguration.secondaryText = item.formattedPrice
             cell.contentConfiguration = contentConfiguration
             if item.hasTag {
-                let tagImage = UIImage(systemName: "tag")
+                let tagImageConfiguration = UIImage.SymbolConfiguration(textStyle: .body)
+                let tagImage = UIImage(systemName: "tag", withConfiguration: tagImageConfiguration)
                 let tagImageView = UIImageView(image: tagImage)
                 tagImageView.tintColor = .systemGreen
+                tagImageView.adjustsImageSizeForAccessibilityContentSizeCategory = true
                 cell.accessoryView = tagImageView
             }
             return cell
@@ -151,5 +152,7 @@ extension HomeViewController: AddEditItemViewControllerDelegate {
     let homeViewController = HomeViewController()
     let homeViewModel = HomeViewModel()
     homeViewController.viewModel = homeViewModel
-    return UINavigationController(rootViewController: homeViewController)
+    let navigationController = UINavigationController(rootViewController: homeViewController)
+    navigationController.navigationBar.prefersLargeTitles = true
+    return navigationController
 }

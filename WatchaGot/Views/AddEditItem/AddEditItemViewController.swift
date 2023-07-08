@@ -47,6 +47,7 @@ class AddEditItemViewController: UIViewController, MainViewController {
         tableView.register(AddEditItemTextViewCell.self, forCellReuseIdentifier: AddEditItemTextViewCell.reuseIdentifier)
         tableView.separatorStyle = .none
         tableView.allowsSelection = false
+        tableView.estimatedRowHeight = 75
     }
 
     func constrain() {
@@ -199,20 +200,6 @@ extension AddEditItemViewController: UITableViewDelegate, UITableViewDataSource 
             return UITableViewCell()
         }
     }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let index = indexPath.row
-
-        switch index {
-        case AddEditItemTextFieldType.name.tag, AddEditItemTextFieldType.price.tag:
-            return 55
-        case AddEditItemTextFieldType.notes.tag:
-            return 100
-        default:
-            return 0
-        }
-    }
-
 }
 
 extension AddEditItemViewController: UITextFieldDelegate {

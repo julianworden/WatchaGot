@@ -23,6 +23,8 @@ final class AddEditItemTextFieldCell: UITableViewCell {
     }
 
     func configure(_ textFieldType: AddEditItemTextFieldType, forItem itemToEdit: Item?) {
+        self.textField.adjustsFontForContentSizeCategory = true
+        self.textField.font = .preferredFont(forTextStyle: .body)
         self.textField.borderStyle = .roundedRect
         self.textField.placeholder = textFieldType.placeholder
         self.textField.keyboardType = textFieldType.keyboardType
