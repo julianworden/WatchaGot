@@ -5,6 +5,7 @@
 //  Created by Julian Worden on 6/8/23.
 //
 
+import SwiftUI
 import UIKit
 
 final class AddEditItemTextViewCell: UITableViewCell {
@@ -23,20 +24,20 @@ final class AddEditItemTextViewCell: UITableViewCell {
     }
 
     func configure(_ textViewType: AddEditItemTextFieldType, withItem itemToEdit: Item?) {
+        self.textView.backgroundColor = UIColor(named: Constants.textViewBackgroundColor)
         self.textView.layer.borderWidth = 0.75
         self.textView.layer.borderColor = UIColor.lightGray.withAlphaComponent(0.35).cgColor
         self.textView.layer.cornerRadius = 6
         self.textView.keyboardType = textViewType.keyboardType
         self.textView.tag = textViewType.tag
         self.textView.adjustsFontForContentSizeCategory = true
+        self.textView.font = .preferredFont(forTextStyle: .body)
 
         if itemToEdit?.notes != nil {
             self.textView.textColor = .label
-            self.textView.font = .preferredFont(forTextStyle: .body)
             self.textView.text = itemToEdit?.notes
         } else {
             self.textView.textColor = .secondaryLabel.withAlphaComponent(0.3)
-            self.textView.font = .preferredFont(forTextStyle: .body)
             self.textView.text = "Notes"
         }
     }

@@ -12,6 +12,8 @@ enum Constants {
     static let nfcAction = "nfcAction"
     static let updatedItem = "updatedItem"
 
+    static let textViewBackgroundColor = "TextViewBackgroundColor"
+
     static let apiUrl = URL(string: "https://watchagot.herokuapp.com")!
     static var apiItemsUrl: URL {
         return apiUrl.appending(path: ApiEndpoint.items)
