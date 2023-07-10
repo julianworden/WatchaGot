@@ -13,6 +13,8 @@ To add an item to Watcha Got?, the user can tap the Receive Item button in the f
 
 If the user opted to scan the item's data to an NFC tag, they will be prompted to erase it from that tag before tapping the Ship Item button in ItemDetailsViewController. Once they've scanned the tag that corresponds to the item in question, the item will be erased from the tag and the database. If the item's data has not been transmitted to an NFC tag, then shipping the item will simply delete it from the database. An item's data can also be transmitted to an NFC tag after the item's initial creation via the Add Tag button in ItemDetailsViewController.
 
+Lastly, Watcha Got? features full support for both Light and Dark Mode, Dynamic Type, and VoiceOver.
+
 ## Under the Hood
 Watcha Got? was built with:
 
