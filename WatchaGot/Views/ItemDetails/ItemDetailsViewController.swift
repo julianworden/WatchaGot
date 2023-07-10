@@ -36,6 +36,7 @@ class ItemDetailsViewController: UIViewController, MainViewController {
         super.viewDidLoad()
 
         configure()
+        makeAccessible()
         constrain()
         subscribeToPublishers()
     }
@@ -89,6 +90,18 @@ class ItemDetailsViewController: UIViewController, MainViewController {
             buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
             buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10)
         ])
+    }
+
+    func makeAccessible() {
+        itemNameLabel.accessibilityTraits = .header
+
+        itemPriceLabel.accessibilityLabel = "Price: \(viewModel.item.price)"
+
+        itemNotesLabel.accessibilityLabel = if viewModel.item.notes != nil {
+            "Notes: \(viewModel.item.notes!)"
+        } else {
+            nil
+        }
     }
 
     func subscribeToPublishers() {

@@ -43,6 +43,21 @@ enum AddEditItemTextFieldType: CaseIterable {
         }
     }
 
+    var accessibilityLabel: String {
+        switch self {
+        case .name:
+            return "Item Name"
+        case .price:
+            return "Item Price"
+        case .notes:
+            return "Item Notes"
+        }
+    }
+
+    var accessibilityHint: String {
+        return "Double tap to edit"
+    }
+
     static func getType(withTag tag: Int) -> AddEditItemTextFieldType {
         return AddEditItemTextFieldType.allCases[tag]
     }

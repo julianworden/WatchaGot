@@ -29,6 +29,8 @@ final class AddEditItemTextFieldCell: UITableViewCell {
         self.textField.placeholder = textFieldType.placeholder
         self.textField.keyboardType = textFieldType.keyboardType
         self.textField.tag = textFieldType.tag
+        self.textField.accessibilityLabel = textFieldType.accessibilityLabel
+        self.textField.accessibilityHint = textFieldType.accessibilityHint
 
         if let itemToEdit {
             switch textFieldType {

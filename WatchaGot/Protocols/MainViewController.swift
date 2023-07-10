@@ -15,6 +15,7 @@ protocol MainViewController {
     
     func configure()
     func constrain()
+    func makeAccessible()
     func subscribeToPublishers()
     func showError(_ error: Error)
 }

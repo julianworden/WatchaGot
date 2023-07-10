@@ -5,7 +5,6 @@
 //  Created by Julian Worden on 6/8/23.
 //
 
-import SwiftUI
 import UIKit
 
 final class AddEditItemTextViewCell: UITableViewCell {
@@ -32,6 +31,8 @@ final class AddEditItemTextViewCell: UITableViewCell {
         self.textView.tag = textViewType.tag
         self.textView.adjustsFontForContentSizeCategory = true
         self.textView.font = .preferredFont(forTextStyle: .body)
+        self.textView.accessibilityLabel = textViewType.accessibilityLabel
+        self.textView.accessibilityHint = textViewType.accessibilityHint
 
         if itemToEdit?.notes != nil {
             self.textView.textColor = .label

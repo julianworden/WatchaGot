@@ -31,6 +31,7 @@ class AddEditItemViewController: UIViewController, MainViewController {
         super.viewDidLoad()
 
         configure()
+        makeAccessible()
         constrain()
         subscribeToPublishers()
     }
@@ -59,6 +60,10 @@ class AddEditItemViewController: UIViewController, MainViewController {
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+    }
+
+    func makeAccessible() {
+
     }
 
     func subscribeToPublishers() {

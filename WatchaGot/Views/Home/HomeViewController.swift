@@ -23,6 +23,7 @@ class HomeViewController: UIViewController, MainViewController {
 
         createDiffableDataSource()
         configure()
+        makeAccessible()
         constrain()
         subscribeToPublishers()
     }
@@ -36,6 +37,7 @@ class HomeViewController: UIViewController, MainViewController {
     func configure() {
         view.backgroundColor = .systemBackground
         navigationItem.largeTitleDisplayMode = .always
+        
         title = "Watcha Got?"
 
         receiveButton.setTitle("Receive New Item", for: .normal)
@@ -60,6 +62,10 @@ class HomeViewController: UIViewController, MainViewController {
             itemsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             itemsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
+    }
+
+    func makeAccessible() {
+        
     }
 
     func subscribeToPublishers() {
@@ -107,6 +113,7 @@ extension HomeViewController: UITableViewDelegate {
             contentConfiguration.text = item.name
             contentConfiguration.secondaryText = item.formattedPrice
             cell.contentConfiguration = contentConfiguration
+            cell.accessibilityLabel = "\(item.name), Price: \(item.formattedPrice)"
             if item.hasTag {
                 let tagImageConfiguration = UIImage.SymbolConfiguration(textStyle: .body)
                 let tagImage = UIImage(systemName: "tag", withConfiguration: tagImageConfiguration)
